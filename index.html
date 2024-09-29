@@ -205,6 +205,14 @@
             </div>
         </div>
 
+        <div id="nvidia-iframe" class="hidden">
+            <iframe src="https://www.nvidia.com/en-us/geforce/now/" title="NVIDIA Cloud Gaming"></iframe>
+        </div>
+
+        <div id="xbox-iframe" class="hidden">
+            <iframe src="https://www.xbox.com/en-US/play" title="Xbox Cloud Gaming"></iframe>
+        </div>
+
         <div id="privacy-policy" class="hidden">
             <div class="parallelogram">
                 <h2>Privacy Policy</h2>
@@ -248,12 +256,14 @@
     </footer>
 
     <script>
-        const loadingScreen = document.getElementById('loading-screen')
+        const loadingScreen = document.getElementById('loading-screen');
         const progress = document.getElementById('progress');
         const content = document.getElementById('content');
         const privacyPolicy = document.getElementById('privacy-policy');
         const popularGames = document.getElementById('popular-games');
         const chat = document.getElementById('chat');
+        const nvidiaIframe = document.getElementById('nvidia-iframe');
+        const xboxIframe = document.getElementById('xbox-iframe');
 
         // Show loading screen
         loadingScreen.style.display = 'flex';
@@ -269,68 +279,69 @@
                 loadingScreen.style.display = 'none'; // Hide loading screen
                 content.classList.remove('hidden'); // Show main content
             }
-        }, 300); // Adjust the time for faster/slower loading
+        }, 300); // Adjust the time for faster loading simulation
 
-        // Navigation Links
-        document.getElementById('nvidia-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
+        // Navigation links
+        document.getElementById('nvidia-link').onclick = function() {
+            nvidiaIframe.classList.remove('hidden');
+            xboxIframe.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
             chat.classList.add('hidden');
-            // Simulating the NVIDIA content
-            alert('Loading NVIDIA Cloud Gaming...');
-        });
+        };
 
-        document.getElementById('xbox-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
+        document.getElementById('xbox-link').onclick = function() {
+            xboxIframe.classList.remove('hidden');
+            nvidiaIframe.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
             chat.classList.add('hidden');
-            // Simulating the Xbox content
-            alert('Loading Xbox Cloud Gaming...');
-        });
+        };
 
-        document.getElementById('privacy-policy-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
+        document.getElementById('privacy-policy-link').onclick = function() {
             privacyPolicy.classList.remove('hidden');
+            nvidiaIframe.classList.add('hidden');
+            xboxIframe.classList.add('hidden');
             popularGames.classList.add('hidden');
             chat.classList.add('hidden');
-        });
+        };
 
-        document.getElementById('popular-games-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
-            privacyPolicy.classList.add('hidden');
+        document.getElementById('popular-games-link').onclick = function() {
             popularGames.classList.remove('hidden');
+            nvidiaIframe.classList.add('hidden');
+            xboxIframe.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
             chat.classList.add('hidden');
-        });
+        };
 
-        document.getElementById('chat-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            content.classList.add('hidden');
+        document.getElementById('chat-link').onclick = function() {
+            chat.classList.remove('hidden');
+            nvidiaIframe.classList.add('hidden');
+            xboxIframe.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
-            chat.classList.remove('hidden');
-        });
+        };
 
         // Chat functionality
-        document.getElementById('send-button').addEventListener('click', () => {
-            const chatMessage = document.getElementById('chat-message').value;
-            if (chatMessage) {
-                const newMessage = document.createElement('p');
-                newMessage.textContent = `You: ${chatMessage}`;
-                document.getElementById('chat-box').appendChild(newMessage);
-                document.getElementById('chat-message').value = ''; // Clear input
-            }
-        });
+        const sendButton = document.getElementById('send-button');
+        const chatMessage = document.getElementById('chat-message');
+        const chatBox = document.getElementById('chat-box');
 
-        // Allow sending messages with Enter key
-        document.getElementById('chat-message').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                document.getElementById('send-button').click();
+        sendButton.onclick = function() {
+            const message = chatMessage.value.trim();
+            if (message) {
+                const newMessage = document.createElement('p');
+                newMessage.textContent = `You: ${message}`;
+                chatBox.appendChild(newMessage);
+                chatMessage.value = ''; // Clear the input
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+            }
+        };
+
+        // Allow pressing Enter to send message
+        chatMessage.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendButton.click(); // Trigger the send button
             }
         });
     </script>
