@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Gaming Hub</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #f1f1f1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a, #0a0b0d);
+        }
+
+        /* Hexagonal Background */
+        .hexagonal-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            display: flex;
+            flex-wrap: wrap;
+            opacity: 0.1;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .hex {
+            width: 100px;
+            height: 57.74px;
+            background: rgba(16, 124, 16, 0.7);
+            margin: 28.87px 0;
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s, transform 0.5s ease;
+        }
+
+        .hex:hover {
+            background: rgba(16, 124, 16, 1);
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .hex:before,
+        .hex:after {
+            content: "";
+            width: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+        }
+
+        .hex:before {
+            border-bottom: 28.87px solid rgba(16, 124, 16, 0.7);
+            position: absolute;
+            top: -28.87px;
+            left: 0;
+        }
+
+        .hex:after {
+            border-top: 28.87px solid rgba(16, 124, 16, 0.7);
+            position: absolute;
+            bottom: -28.87px;
+            left: 0;
+        }
+
+        /* Header Style with Logos */
+        header {
+            text-align: center;
+            background: rgba(16, 124, 16, 0.9);
+            padding: 20px 0;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            animation: fadeInDown 1.5s;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            letter-spacing: 2px;
+            color: #ffffff;
+            background: -webkit-linear-gradient(#107c10, #00ff00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0;
+            animation: textGlitch 4s infinite;
+        }
+
+        .tagline {
+            font-size: 1.7rem;
+            color: #a1a1a1;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        nav {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul li img {
+            height: 40px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            font-size: 1.5rem;
+            color: #f1f1f1;
+            transition: color 0.3s ease, transform 0.3s ease;
+            font-weight: bold;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: #00ff00;
+            transform: scale(1.1);
+        }
+
+        /* Main Content Style */
+        #main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            width: 100%;
+            transition: opacity 0.8s;
+        }
+
+        .content {
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        iframe {
+            width: 80%;
+            height: 600px;
+            border: 2px solid #107c10;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        iframe:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer Style */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #2c2f33;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        /* Keyframes for Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes textGlitch {
+            0% {
+                text-shadow: 2px 2px 1px rgba(0, 255, 0, 0.5);
+            }
+            25% {
+                text-shadow: -2px -2px 1px rgba(255, 0, 0, 0.5);
+            }
+            50% {
+                text-shadow: 2px 2px 1px rgba(0, 0, 255, 0.5);
+            }
+            75% {
+                text-shadow: -2px -2px 1px rgba(255, 255, 0, 0.5);
+            }
+            100% {
+                text-shadow: 2px 2px 1px rgba(0, 255, 0, 0.5);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            nav ul li {
+                margin: 0 1rem;
+            }
+            iframe {
+                width: 100%;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hexagonal-bg">
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+    </div>
+    <header>
+        <h1>Cloud Gaming Hub</h1>
+        <div class="tagline">Your gateway to endless gaming possibilities</div>
+        <nav>
+            <ul>
+                <li>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/2/2c/Nvidia_logo.svg" alt="NVIDIA Logo">
+                    <a href="#" id="nvidia-link">NVIDIA GeForce NOW</a>
+                </li>
+                <li>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Xbox_logo.svg/1200px-Xbox_logo.svg.png" alt="Xbox Logo">
+                    <a href="#" id="xbox-link">Xbox Cloud Gaming</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <section id="main-content">
+        <div id="nvidia-section" class="content">
+            <h2>Play on NVIDIA GeForce NOW</h2>
+            <iframe src="https://play.geforcenow.com" title="NVIDIA GeForce NOW" allowfullscreen></iframe>
+        </div>
+<div id="xbox-section" class="content" style="display:none;">
+            <h2>Play on Xbox Cloud Gaming</h2>
+            <iframe src="https://xbox.com/play" title="Xbox Cloud Gaming" allowfullscreen></iframe>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2024 Cloud Gaming Hub. All rights reserved.</p>
+        <p>Contact us: support@cloudgaminghub.com</p>
+    </footer>
+    
+    <script>
+        // JavaScript to switch between NVIDIA and Xbox sections
+        document.getElementById('nvidia-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('nvidia-section').style.display = 'block';
+            document.getElementById('xbox-section').style.display = 'none';
+        });
+
+        document.getElementById('xbox-link').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('nvidia-section').style.display = 'none';
+            document.getElementById('xbox-section').style.display = 'block';
+        });
+    </script>
+</body>
+  </html>
