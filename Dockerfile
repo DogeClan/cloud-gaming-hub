@@ -1,24 +1,38 @@
-# Use the official Node.js image as a base
-FROM node:latest
+# Use the official Nginx image
+FROM nginx:latest
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /usr/share/nginx/html
 
-# Copy your HTML files into the container
+# Copy your HTML files into the Nginx directory
 COPY . .
 
-# Install the http-server package and mitmproxy
-RUN npm install -g http-server && \
-    apt-get update && \
-    apt-get install -y mitmproxy && \
-    apt-get clean
+# Create the Nginx configuration file
+RUN echo 'worker_processes 1;' > /etc/nginx/nginx.conf && \
+    echo 'events { worker_connections 1024; }' >> /etc/nginx/nginx.conf && \
+    echo 'http {' >> /etc/nginx/nginx.conf && \
+    echo '    server {' >> /etc/nginx/nginx.conf && \
+    echo '        listen 80;' >> /etc/nginx/nginx.conf && \
+    echo '' >> /etc/nginx/nginx.conf && \
+    echo '        location / {' >> /etc/nginx/nginx.conf && \
+    echo '            root   /usr/share/nginx/html;' >> /etc/nginx/nginx.conf && \
+    echo '            index  index.html index.htm;' >> /etc/nginx/nginx.conf && \
+    echo '            try_files $uri $uri/ =404;' >> /etc/nginx/nginx.conf && \
+    echo '        }' >> /etc/nginx/nginx.conf && \
+    echo '' >> /etc/nginx/nginx.conf && \
+    echo '        # Example of a proxy pass to an external service (adjust as needed)' >> /etc/nginx/nginx.conf && \
+    echo '        location /proxy/ {' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_pass http://example.com;  # Replace with the actual URL you want to proxy' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_set_header Host $host;' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_set_header X-Real-IP $remote_addr;' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_set_header X-Forwarded-Proto $scheme;' >> /etc/nginx/nginx.conf && \
+    echo '        }' >> /etc/nginx/nginx.conf && \
+    echo '    }' >> /etc/nginx/nginx.conf && \
+    echo '}' >> /etc/nginx/nginx.conf
 
-# Expose the ports for both http-server and mitmproxy
-EXPOSE 8080 8081
+# Expose the port for the Nginx server
+EXPOSE 80
 
-# Create a script to start both servers
-RUN echo '#!/bin/sh\nmitmdump --mode transparent --showhost --listen-port 8081 &\nhttp-server . -p 8080' > start.sh && \
-    chmod +x start.sh
-
-# Start the script
-CMD ["./start.sh"]
+# Start Nginx (default command)
+CMD ["nginx", "-g", "daemon off;"]
