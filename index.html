@@ -17,9 +17,9 @@
             height: 100vh;
             overflow: hidden;
             background: linear-gradient(135deg, #1a1a1a, #0a0b0d);
+            transition: background 0.5s;
         }
 
-        /* Hexagonal Background */
         .hexagonal-bg {
             position: absolute;
             top: 0;
@@ -70,7 +70,6 @@
             left: 0;
         }
 
-        /* Header Style with Logos */
         header {
             text-align: center;
             background: rgba(16, 124, 16, 0.9);
@@ -139,7 +138,6 @@
             transform: scale(1.1);
         }
 
-        /* Main Content Style */
         #main-content {
             flex: 1;
             display: flex;
@@ -162,28 +160,6 @@
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
-        .additional-content {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .feature {
-            background-color: rgba(16, 124, 16, 0.8);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            flex: 1;
-            min-width: 300px;
-            transition: transform 0.3s;
-        }
-
-        .feature:hover {
-            transform: scale(1.05);
-        }
-
         iframe {
             width: 80%;
             height: 400px;
@@ -197,7 +173,41 @@
             transform: scale(1.05);
         }
 
-        /* Footer Style */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-text {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background: #555;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0;
+            background: #00ff00;
+            transition: width 0.5s;
+        }
+
         footer {
             text-align: center;
             padding: 10px;
@@ -208,7 +218,6 @@
             animation: fadeInUp 1.5s ease-in-out;
         }
 
-        /* Keyframes for Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -257,95 +266,90 @@
                 text-shadow: 2px 2px 1px rgba(0, 255, 0, 0.5);
             }
         }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            h2 {
-                font-size: 2rem;
-            }
-            nav ul li {
-                margin: 0 1rem;
-            }
-            iframe {
-                width: 100%;
-                height: 300px;
-            }
-            .additional-content {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="hexagonal-bg">
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-        <div class="hex"></div>
-    </div>
-    <header>
-        <h1>Cloud Gaming Hub</h1>
-<div class="tagline">Experience Gaming Like Never Before</div>
-        <nav>
-            <ul>
-                <li><a href="https://www.nvidia.com/en-us/geforce/cloud-gaming/" target="_blank"><img src="nvidia_logo.png" alt="NVIDIA Logo"> NVIDIA Cloud Gaming</a></li>
-                <li><a href="https://xbox.com/en-US/cloudgaming" target="_blank"><img src="xbox_logo.png" alt="Xbox Logo"> Xbox Cloud Gaming</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div id="main-content">
-        <div class="content">
-            <h2>Welcome to the Future of Gaming</h2>
-            <p>Discover the latest in cloud gaming technology, featuring powerful graphics and seamless gameplay.</p>
-            <div class="additional-content">
-                <div class="feature">
-                    <h3>Top Games</h3>
-                    <p>Play the hottest titles from anywhere, anytime.</p>
-                    <ul>
-                        <li>Cyberpunk 2077</li>
-                        <li>Call of Duty: Warzone</li>
-                        <li>Fortnite</li>
-                    </ul>
-                </div>
-                <div class="feature">
-                    <h3>Graphics Performance</h3>
-                    <p>Experience stunning visuals with NVIDIA's cutting-edge technology.</p>
-                    <ul>
-                        <li>Ray Tracing</li>
-                        <li>DLSS 2.0</li>
-                        <li>Adaptive Shading</li>
-                    </ul>
-                </div>
-                <div class="feature">
-                    <h3>Getting Started</h3>
-                    <p>Join us and start playing cloud games today!</p>
-                    <ul>
-                        <li>Create an account</li>
-                        <li>Download the app</li>
-                        <li>Start gaming!</li>
-                    </ul>
-                </div>
-            </div>
-            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-text">Loading...</div>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
         </div>
     </div>
+
+    <header>
+        <h1>Cloud Gaming Hub</h1>
+        <div class="tagline">Your gateway to cloud gaming!</div>
+    </header>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="#" id="nvidia-link">
+                    <img src="nvidia-logo.png" alt="NVIDIA Logo">NVIDIA
+                </a>
+            </li>
+            <li>
+                <a href="#" id="xbox-link">
+                    <img src="xbox-logo.png" alt="Xbox Logo">Xbox
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <div class="content" id="content">
+            <h2>Welcome to Cloud Gaming!</h2>
+            <p>Select a platform to start gaming.</p>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2024 Cloud Gaming Hub. All rights reserved. | <a href="privacy.html" style="color: #00ff00;">Privacy Policy</a></p>
+        &copy; 2024 Cloud Gaming Hub. All rights reserved.
     </footer>
+
     <script>
-        // Add any JavaScript functionality here if needed
+        const loadingScreen = document.getElementById('loading-screen');
+        const progress = document.getElementById('progress');
+        const mainContent = document.getElementById('main-content');
+        const content = document.getElementById('content');
+
+        document.getElementById('nvidia-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
+        });
+
+        document.getElementById('xbox-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadContent('https://www.xbox.com/en-US/live', 'Xbox Login');
+        });
+
+        function loadContent(url, title) {
+            loadingScreen.style.display = 'flex';
+            content.style.opacity = 0;
+
+            // Simulate loading progress
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadIframe(url, title);
+                        loadingScreen.style.display = 'none';
+                    }, 500); // Delay before loading new content
+                } else {
+                    width++;
+                    progress.style.width = width + '%';
+                }
+            }, 20); // Speed of the progress bar
+        }
+
+        function loadIframe(url, title) {
+            content.innerHTML = `
+                <h2>${title}</h2>
+                <iframe src="${url}" title="${title}"></iframe>
+            `;
+            content.style.opacity = 1;
+        }
     </script>
 </body>
 </html>
