@@ -21,6 +21,7 @@
             background: #000;
             padding: 10px;
             text-align: center;
+            animation: fadeIn 1s ease-in-out; /* Fade in animation */
         }
 
         nav ul {
@@ -28,15 +29,24 @@
             padding: 0;
             display: flex;
             justify-content: center;
+            animation: slideIn 0.5s ease-in-out; /* Slide in animation */
         }
 
         nav ul li {
             margin: 0 15px;
+            position: relative; /* Position for hover effects */
         }
 
         nav ul li a {
             color: #00ff00;
             text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 5px 0; /* Space for underline effect */
+        }
+
+        nav ul li a:hover {
+            color: #009900;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.8); /* Glowing effect */
         }
 
         #main-content {
@@ -62,12 +72,14 @@
             justify-content: center;
             align-items: center;
             color: #fff;
+            animation: fadeIn 0.5s ease-in-out; /* Fade in loading screen */
         }
 
         .loading-screen #progress {
             width: 0;
             height: 5px;
             background: #00ff00;
+            transition: width 0.2s ease; /* Smooth progress animation */
         }
 
         iframe {
@@ -75,6 +87,7 @@
             height: 400px;
             border: none;
             background: #000;
+            transition: transform 0.5s ease; /* Smooth transition for iframe */
         }
 
         .hidden {
@@ -87,6 +100,8 @@
             height: 300px;
             overflow-y: scroll;
             margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease; /* Smooth fade-in for chat box */
         }
 
         .chat-input {
@@ -100,6 +115,12 @@
             border: 1px solid #00ff00;
             background: #222;
             color: #fff;
+            transition: border-color 0.3s ease; /* Input border color transition */
+        }
+
+        .chat-input input:focus {
+            border-color: #009900; /* Change border color on focus */
+            outline: none; /* Remove default outline */
         }
 
         .chat-input button {
@@ -107,10 +128,12 @@
             background: #00ff00;
             border: none;
             cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s; /* Button transition */
         }
 
         .chat-input button:hover {
             background: #009900;
+            transform: scale(1.05); /* Scale effect on hover */
         }
 
         /* 3D Text Effect */
@@ -123,6 +146,7 @@
             animation: phase 3s infinite alternate;
             perspective: 1000px;
             display: inline-block;
+            animation: fadeIn 1s ease-in-out; /* Fade in animation for text */
         }
 
         @keyframes phase {
@@ -134,6 +158,26 @@
             }
             100% {
                 transform: rotateY(-10deg) translateZ(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
             }
         }
 
@@ -150,6 +194,12 @@
         .parallelogram:hover {
             transform: skew(-10deg) translateY(-10px);
             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Chat message animation */
+        .chat-box p {
+            opacity: 0;
+            animation: fadeIn 0.5s forwards; /* Fade in effect for chat messages */
         }
 
     </style>
@@ -228,100 +278,94 @@
         const progress = document.getElementById('progress');
         const content = document.getElementById('content');
         const privacyPolicy = document.getElementById('privacy-policy');
-        const popularGames = document.getElementById('popular-games');
-        const chat = document.getElementById('chat');
-        const chatBox = document.getElementById('chat-box');
-        const chatInput = document.getElementById('chat-message');
+        const popularGames = document.getElementBy
+        'popular-games');
+        const chatSection = document.getElementById('chat');
+        const nvidiaLink = document.getElementById('nvidia-link');
+        const xboxLink = document.getElementById('xbox-link');
+        const privacyPolicyLink = document.getElementById('privacy-policy-link');
+        const popularGamesLink = document.getElementById('popular-games-link');
+        const chatLink = document.getElementById('chat-link');
         const sendButton = document.getElementById('send-button');
+        const chatMessage = document.getElementById('chat-message');
+        const chatBox = document.getElementById('chat-box');
 
-        document.getElementById('nvidia-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
-        });
-
-        document.getElementById('xbox-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadContent('https://www.xbox.com/en-US/live', 'Xbox Login');
-        });
-
-        document.getElementById('privacy-policy-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadSection(privacyPolicy);
-        });
-
-        document.getElementById('popular-games-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadSection(popularGames);
-        });
-
-        document.getElementById('chat-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadSection(chat);
-        });
-
-        function loadContent(url, title) {
+        // Function to simulate loading progress
+        function simulateLoading() {
             loadingScreen.style.display = 'flex';
-            content.style.opacity = 0;
-
-            // Simulate loading progress
             let width = 0;
             const interval = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => {
-                        loadIframe(url, title);
-                        loadingScreen.style.display = 'none';
-                    }, 500); // Delay before loading new content
+                    loadingScreen.style.display = 'none';
                 } else {
                     width++;
-                    progress.style.width =width + '%';
+                    progress.style.width = width + '%';
                 }
-            }, 20); // Adjust the interval speed here if necessary
+            }, 20);
         }
 
-        function loadIframe(url, title) {
-            const iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.onload = () => {
-                content.innerHTML = ''; // Clear previous content
-                content.appendChild(iframe); // Add the iframe to the content
-                content.style.opacity = 1; // Fade in new content
-                document.title = title; // Update the page title
-            };
+        // Function to switch content based on navigation clicks
+        function switchContent(showContent) {
+            const contents = [content, privacyPolicy, popularGames, chatSection];
+            contents.forEach((c) => {
+                c.classList.add('hidden');
+            });
+            showContent.classList.remove('hidden');
         }
 
-        function loadSection(section) {
-            // Hide all sections first
-            privacyPolicy.classList.add('hidden');
-            popularGames.classList.add('hidden');
-            chat.classList.add('hidden');
-            content.style.opacity = 0;
+        // Event listeners for navigation links
+        nvidiaLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            simulateLoading();
+            setTimeout(() => {
+                // Placeholder for NVIDIA content
+                switchContent(content);
+            }, 1000);
+        });
 
-            // Show the selected section
-            section.classList.remove('hidden');
-            content.style.opacity = 1;
-        }
+        xboxLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            simulateLoading();
+            setTimeout(() => {
+                // Placeholder for Xbox content
+                switchContent(content);
+            }, 1000);
+        });
 
+        privacyPolicyLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchContent(privacyPolicy);
+        });
+
+        popularGamesLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchContent(popularGames);
+        });
+
+        chatLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchContent(chatSection);
+            setTimeout(() => {
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom of the chat
+            }, 10);
+        });
+
+        // Function to handle sending chat messages
         sendButton.addEventListener('click', () => {
-            const message = chatInput.value.trim();
+            const message = chatMessage.value.trim();
             if (message) {
                 const newMessage = document.createElement('p');
                 newMessage.textContent = `You: ${message}`;
                 chatBox.appendChild(newMessage);
-                chatInput.value = ''; // Clear the input field
+                chatMessage.value = ''; // Clear input
                 chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
             }
         });
 
-        // Optional: Allow pressing "Enter" to send messages
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                sendButton.click();
-            }
-        });
-
-        // Simulate loading the default platform on startup
-        loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
+        // Load the initial state
+        simulateLoading();
+        switchContent(content);
     </script>
 </body>
 </html>
