@@ -293,63 +293,83 @@
                     <img src="xbox-logo.png" alt="Xbox Logo">Xbox
                 </a>
             </li>
+            <li>
+                <a href="#" id="playstation-link">
+                    <img src="playstation-logo.png" alt="PlayStation Logo">PlayStation
+                </a>
+            </li>
+            <li>
+                <a href="#" id="google-stadia-link">
+                    <img src="google-stadia-logo.png" alt="Google Stadia Logo">Google Stadia
+                </a>
+            </li>
+            <li>
+                <a href="#" id="amazon-luna-link">
+                    <img src="amazon-luna-logo.png" alt="Amazon Luna Logo">Amazon Luna
+                </a>
+            </li>
+            <li>
+                <a href="#" id="geforce-now-link">
+                    <img src="geforce-now-logo.png" alt="GeForce Now Logo">GeForce Now
+                </a>
+            </li>
         </ul>
     </nav>
 
     <div id="main-content">
-        <div class="content" id="content">
-            <h2>Welcome to Cloud Gaming!</h2>
-            <p>Select a platform to start gaming.</p>
+        <div class="content">
+            <h2>Welcome to the Cloud Gaming Hub</h2>
+            <p>Click on a platform to login and start gaming!</p>
+            <iframe src="about:blank" id="gaming-frame"></iframe>
         </div>
     </div>
 
     <footer>
-        &copy; 2024 Cloud Gaming Hub. All rights reserved.
+        <p>&copy; 2024 Cloud Gaming Hub. All rights reserved.</p>
     </footer>
 
     <script>
         const loadingScreen = document.getElementById('loading-screen');
         const progress = document.getElementById('progress');
-        const mainContent = document.getElementById('main-content');
-        const content = document.getElementById('content');
+        const gamingFrame = document.getElementById('gaming-frame');
 
-        document.getElementById('nvidia-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
-        });
+        // Simulate loading progress
+        let loadPercentage = 0;
+        const loadInterval = setInterval(() => {
+            if (loadPercentage < 100) {
+                loadPercentage += 10;
+                progress.style.width = loadPercentage + '%';
+            } else {
+                clearInterval(loadInterval);
+                loadingScreen.style.display = 'none';
+            }
+        }, 300);
 
-        document.getElementById('xbox-link').addEventListener('click', (e) => {
-            e.preventDefault();
-            loadContent('https://www.xbox.com/en-US/live', 'Xbox Login');
-        });
-
-        function loadContent(url, title) {
-            loadingScreen.style.display = 'flex';
-            content.style.opacity = 0;
-
-            // Simulate loading progress
-            let width = 0;
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        loadIframe(url, title);
-                        loadingScreen.style.display = 'none';
-                    }, 500); // Delay before loading new content
-                } else {
-                    width++;
-                    progress.style.width = width + '%';
-                }
-            }, 20); // Speed of the progress bar
-        }
-
-        function loadIframe(url, title) {
-            content.innerHTML = `
-                <h2>${title}</h2>
-                <iframe src="${url}" title="${title}"></iframe>
-            `;
-            content.style.opacity = 1;
-        }
+        // Add click event listeners for the links
+        document.getElementById('nvidia-link').onclick = () => {
+            gamingFrame.src = 'https://www.nvidia.com/en-us/geforce-now/';
+            return false; // Prevent default link behavior
+        };
+        document.getElementById('xbox-link').onclick = () => {
+            gamingFrame.src = 'https://www.xbox.com/en-US/live/gold';
+            return false;
+        };
+        document.getElementById('playstation-link').onclick = () => {
+            gamingFrame.src = 'https://www.playstation.com/en-us/ps-plus/';
+            return false;
+        };
+        document.getElementById('google-stadia-link').onclick = () => {
+            gamingFrame.src = 'https://stadia.google.com/';
+            return false;
+        };
+        document.getElementById('amazon-luna-link').onclick = () => {
+            gamingFrame.src = 'https://www.amazon.com/luna';
+            return false;
+        };
+        document.getElementById('geforce-now-link').onclick = () => {
+            gamingFrame.src = 'https://www.nvidia.com/en-us/geforce-now/';
+            return false;
+        };
     </script>
 </body>
 </html>
