@@ -20,9 +20,11 @@ RUN echo 'worker_processes 1;' > /etc/nginx/nginx.conf && \
     echo '            try_files $uri $uri/ =404;' >> /etc/nginx/nginx.conf && \
     echo '        }' >> /etc/nginx/nginx.conf && \
     echo '' >> /etc/nginx/nginx.conf && \
-    echo '        # Example of a proxy pass to an external service (adjust as needed)' >> /etc/nginx/nginx.conf && \
+    echo '        # Forward Proxy Configuration' >> /etc/nginx/nginx.conf && \
     echo '        location /proxy/ {' >> /etc/nginx/nginx.conf && \
-    echo '            proxy_pass http://example.com;  # Replace with the actual URL you want to proxy' >> /etc/nginx/nginx.conf && \
+    echo '            resolver 8.8.8.8;  # Use Google DNS' >> /etc/nginx/nginx.conf && \
+    echo '            set $target $arg_url;  # Get the target URL from the query string' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_pass http://$target;  # Forward the request to the target' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header Host $host;' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header X-Real-IP $remote_addr;' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> /etc/nginx/nginx.conf && \
