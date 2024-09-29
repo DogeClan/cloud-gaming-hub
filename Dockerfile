@@ -1,26 +1,17 @@
-# Use Alpine as the base image
-FROM alpine:latest
+# Use the official Node.js image as a base
+FROM node:latest
 
-# Install necessary packages
-RUN apk add --no-cache \
-    git \
-    nodejs \
-    npm \
-    xpra \
-    curl \
-    && git clone https://github.com/DogeNetwork/v4.git /app/doge-unblocker \
-    && cd /app/doge-unblocker \
-    && npm install \
-    && npm install -g http-server
+# Set the working directory
+WORKDIR /usr/src/app
 
-# Set the working directory for Doge Unblocker
-WORKDIR /app/doge-unblocker
-
-# Copy your HTML code (ensure your HTML file is in the same directory as this Dockerfile)
+# Copy your HTML files into the container
 COPY . .
 
-# Expose the necessary ports (8080 for Doge Unblocker and 80 for serving HTML)
-EXPOSE 8080 80
+# Install the http-server package
+RUN npm install -g http-server
 
-# Start a simple HTTP server and Doge Unblocker
-CMD ["/bin/sh", "-c", "npm start & http-server -p 80"]
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Command to run the HTTP server
+CMD ["http-server", ".", "-p", "8080"]
