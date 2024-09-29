@@ -6,370 +6,261 @@
     <title>Cloud Gaming Hub</title>
     <style>
         body {
+            background: #1a1a1a;
+            color: #f1f1f1;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #f1f1f1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
             height: 100vh;
-            overflow: hidden;
-            background: linear-gradient(135deg, #1a1a1a, #0a0b0d);
-            transition: background 0.5s;
-        }
-
-        .hexagonal-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-            display: flex;
-            flex-wrap: wrap;
-            opacity: 0.1;
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        .hex {
-            width: 100px;
-            height: 57.74px;
-            background: rgba(16, 124, 16, 0.7);
-            margin: 28.87px 0;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.5s, transform 0.5s ease;
-        }
-
-        .hex:hover {
-            background: rgba(16, 124, 16, 1);
-            transform: rotate(15deg) scale(1.2);
-        }
-
-        .hex:before,
-        .hex:after {
-            content: "";
-            width: 0;
-            border-left: 50px solid transparent;
-            border-right: 50px solid transparent;
-        }
-
-        .hex:before {
-            border-bottom: 28.87px solid rgba(16, 124, 16, 0.7);
-            position: absolute;
-            top: -28.87px;
-            left: 0;
-        }
-
-        .hex:after {
-            border-top: 28.87px solid rgba(16, 124, 16, 0.7);
-            position: absolute;
-            bottom: -28.87px;
-            left: 0;
         }
 
         header {
+            background: #000;
+            padding: 10px;
             text-align: center;
-            background: rgba(16, 124, 16, 0.9);
-            padding: 20px 0;
-            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-            animation: fadeInDown 1.5s;
-        }
-
-        header h1 {
-            font-size: 4rem;
-            letter-spacing: 2px;
-            color: #ffffff;
-            background: -webkit-linear-gradient(#107c10, #00ff00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0;
-            animation: textGlitch 4s infinite;
-        }
-
-        .tagline {
-            font-size: 1.7rem;
-            color: #a1a1a1;
-            margin-top: 10px;
-            font-style: italic;
-        }
-
-        nav {
-            margin: 20px 0;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
         }
 
         nav ul {
+            list-style-type: none;
+            padding: 0;
             display: flex;
             justify-content: center;
-            list-style: none;
-            padding: 0;
         }
 
         nav ul li {
-            margin: 0 2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        nav ul li img {
-            height: 40px;
+            margin: 0 15px;
         }
 
         nav ul li a {
-            text-decoration: none;
-            font-size: 1.5rem;
-            color: #f1f1f1;
-            transition: color 0.3s ease, transform 0.3s ease;
-            font-weight: bold;
-            letter-spacing: 1px;
-            position: relative;
-        }
-
-        nav ul li a:hover {
             color: #00ff00;
-            transform: scale(1.1);
+            text-decoration: none;
         }
 
         #main-content {
             flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            overflow: auto;
             padding: 20px;
-            width: 100%;
-            transition: opacity 0.8s;
-            position: relative;
         }
 
-        .content {
+        footer {
+            background: #000;
             text-align: center;
-            transition: opacity 0.5s ease;
-        }
-
-        h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        iframe {
-            width: 80%;
-            height: 400px;
-            border: 2px solid #107c10;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-
-        iframe:hover {
-            transform: scale(1.05);
+            padding: 10px;
         }
 
         .loading-screen {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            color: #ffffff;
-            display: none;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            color: #fff;
         }
 
-        .loading-text {
-            font-size: 2rem;
+        .loading-screen #progress {
+            width: 0;
+            height: 5px;
+            background: #00ff00;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            background: #000;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .chat-box {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
             margin-bottom: 20px;
         }
 
-        .progress-bar {
-            width: 80%;
-            height: 20px;
-            background: #555;
-            border-radius: 10px;
-            overflow: hidden;
+        .chat-input {
+            display: flex;
+            margin-top: 10px;
         }
 
-        .progress {
-            height: 100%;
-            width: 0;
-            background: #00ff00;
-            transition: width 0.5s;
-        }
-
-        footer {
-            text-align: center;
+        .chat-input input {
+            flex: 1;
             padding: 10px;
-            background-color: #2c2f33;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            border-top: 2px solid rgba(255, 255, 255, 0.1);
-            animation: fadeInUp 1.5s ease-in-out;
+            border: 1px solid #00ff00;
+            background: #222;
+            color: #fff;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .chat-input button {
+            padding: 10px;
+            background: #00ff00;
+            border: none;
+            cursor: pointer;
         }
 
-        @keyframes fadeInDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes textGlitch {
-            0% {
-                text-shadow: 2px 2px 1px rgba(0, 255, 0, 0.5);
-            }
-            25% {
-                text-shadow: -2px -2px 1px rgba(255, 0, 0, 0.5);
-            }
-            50% {
-                text-shadow: 2px 2px 1px rgba(0, 0, 255, 0.5);
-            }
-            75% {
-                text-shadow: -2px -2px 1px rgba(255, 255, 0, 0.5);
-            }
-            100% {
-                text-shadow: 2px 2px 1px rgba(0, 255, 0, 0.5);
-            }
+        .chat-input button:hover {
+            background: #009900;
         }
     </style>
 </head>
 <body>
-    <div class="loading-screen" id="loading-screen">
-        <div class="loading-text">Loading...</div>
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
-        </div>
-    </div>
-
     <header>
         <h1>Cloud Gaming Hub</h1>
-        <div class="tagline">Your gateway to cloud gaming!</div>
     </header>
+
+    <div class="loading-screen" id="loading-screen">
+        <div>Loading... <div id="progress"></div></div>
+    </div>
 
     <nav>
         <ul>
-            <li>
-                <a href="#" id="nvidia-link">
-                    <img src="nvidia-logo.png" alt="NVIDIA Logo">NVIDIA
-                </a>
-            </li>
-            <li>
-                <a href="#" id="xbox-link">
-                    <img src="xbox-logo.png" alt="Xbox Logo">Xbox
-                </a>
-            </li>
-            <li>
-                <a href="#" id="playstation-link">
-                    <img src="playstation-logo.png" alt="PlayStation Logo">PlayStation
-                </a>
-            </li>
-            <li>
-                <a href="#" id="google-stadia-link">
-                    <img src="google-stadia-logo.png" alt="Google Stadia Logo">Google Stadia
-                </a>
-            </li>
-            <li>
-                <a href="#" id="amazon-luna-link">
-                    <img src="amazon-luna-logo.png" alt="Amazon Luna Logo">Amazon Luna
-                </a>
-            </li>
-            <li>
-                <a href="#" id="geforce-now-link">
-                    <img src="geforce-now-logo.png" alt="GeForce Now Logo">GeForce Now
-                </a>
-            </li>
+            <li><a href="#" id="nvidia-link"><img src="nvidia-logo.png" alt="NVIDIA Logo">NVIDIA</a></li>
+            <li><a href="#" id="xbox-link"><img src="xbox-logo.png" alt="Xbox Logo">Xbox</a></li>
+            <li><a href="#" id="privacy-policy-link">Privacy Policy</a></li>
+            <li><a href="#" id="popular-games-link">Popular Games</a></li>
+            <li><a href="#" id="chat-link">Chat</a></li>
         </ul>
     </nav>
 
     <div id="main-content">
-        <div class="content">
-            <h2>Welcome to the Cloud Gaming Hub</h2>
-            <p>Click on a platform to login and start gaming!</p>
-            <iframe src="about:blank" id="gaming-frame"></iframe>
+        <div class="content" id="content">
+            <h2>Welcome to Cloud Gaming!</h2>
+            <p>Select a platform to start gaming.</p>
+        </div>
+
+        <div id="privacy-policy" class="hidden">
+            <h2>Privacy Policy</h2>
+            <p>Your privacy is important to us. We collect information to provide better services to all our users.</p>
+            <p>For more details, please contact us.</p>
+        </div>
+
+        <div id="popular-games" class="hidden">
+            <h2>Popular Games</h2>
+            <ul>
+                <li>The Witcher 3</li>
+                <li>Halo Infinite</li>
+                <li>Fortnite</li>
+                <li>Call of Duty: Warzone</li>
+                <li>Cyberpunk 2077</li>
+            </ul>
+        </div>
+
+        <div id="chat" class="hidden">
+            <h2>Chat Room</h2>
+            <div id="chat-box" class="chat-box">
+                <p>User1: Hey there!</p>
+                <p>User2: Hello! What games are you playing?</p>
+                <p>User1: I'm into Fortnite right now.</p>
+                <p>User2: Nice! I love that game too!</p>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chat-message" placeholder="Type a message..." />
+                <button id="send-button">Send</button>
+            </div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2024 Cloud Gaming Hub. All rights reserved.</p>
+        &copy; 2024 Cloud Gaming Hub. All rights reserved.
     </footer>
 
     <script>
         const loadingScreen = document.getElementById('loading-screen');
         const progress = document.getElementById('progress');
-        const gamingFrame = document.getElementById('gaming-frame');
+        const content = document.getElementById('content');
+        const privacyPolicy = document.getElementById('privacy-policy');
+        const popularGames = document.getElementById('popular-games');
+        const chat = document.getElementById('chat');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-message');
+        const sendButton = document.getElementById('send-button');
 
-        // Simulate loading progress
-        let loadPercentage = 0;
-        const loadInterval = setInterval(() => {
-            if (loadPercentage < 100) {
-                loadPercentage += 10;
-                progress.style.width = loadPercentage + '%';
-            } else {
-                clearInterval(loadInterval);
-                loadingScreen.style.display = 'none';
+        document.getElementById('nvidia-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
+        });
+
+        document.getElementById('xbox-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadContent('https://www.xbox.com/en-US/live', 'Xbox Login');
+        });
+
+        document.getElementById('privacy-policy-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadSection(privacyPolicy);
+        });
+
+        document.getElementById('popular-games-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadSection(popularGames);
+        });
+
+        document.getElementById('chat-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            loadSection(chat);
+        });
+
+        function loadContent(url, title) {
+            loadingScreen.style.display = 'flex';
+            content.style.opacity = 0;
+
+            // Simulate loading progress
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        loadIframe(url, title);
+                        loadingScreen.style.display = 'none';
+                    }, 500); // Delay before loading new content
+                } else {
+                    width++;
+                    progress.style.width = width + '%';
+                }
+            }, 20); // Speed of the progress bar
+        }
+
+        function loadIframe(url, title) {
+            content.innerHTML = `
+                <h2>${title}</h2>
+                <iframe src="${url}" title="${title}"></iframe>
+            `;
+            content.style.opacity = 1;
+        }
+
+        function loadSection(section) {
+            // Hide all sections
+            content.innerHTML = '';
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.add('hidden');
+
+            // Show the selected section
+            section.classList.remove('hidden');
+            content.appendChild(section);
+            content.style.opacity = 1;
+        }
+
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value;
+            if (message.trim() !== '') {
+                const newMessage = document.createElement('p');
+                newMessage.textContent = `You: ${message}`;
+                chatBox.appendChild(newMessage);
+                chatInput.value = ''; // Clear input
+                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
             }
-        }, 300);
-
-        // Add click event listeners for the links
-        document.getElementById('nvidia-link').onclick = () => {
-            gamingFrame.src = 'https://www.nvidia.com/en-us/geforce-now/';
-            return false; // Prevent default link behavior
-        };
-        document.getElementById('xbox-link').onclick = () => {
-            gamingFrame.src = 'https://www.xbox.com/en-US/live/gold';
-            return false;
-        };
-        document.getElementById('playstation-link').onclick = () => {
-            gamingFrame.src = 'https://www.playstation.com/en-us/ps-plus/';
-            return false;
-        };
-        document.getElementById('google-stadia-link').onclick = () => {
-            gamingFrame.src = 'https://stadia.google.com/';
-            return false;
-        };
-        document.getElementById('amazon-luna-link').onclick = () => {
-            gamingFrame.src = 'https://www.amazon.com/luna';
-            return false;
-        };
-        document.getElementById('geforce-now-link').onclick = () => {
-            gamingFrame.src = 'https://www.nvidia.com/en-us/geforce-now/';
-            return false;
-        };
+        });
     </script>
 </body>
 </html>
