@@ -73,7 +73,7 @@
 
         iframe {
             width: 100%;
-            height: 600px; /* Increased height for better visibility */
+            height: 400px;
             border: none;
             background: #000;
         }
@@ -205,14 +205,6 @@
             </div>
         </div>
 
-        <div id="nvidia-content" class="hidden">
-            <iframe src="https://www.nvidia.com/en-us/geforce/now/" title="NVIDIA Cloud Gaming"></iframe>
-        </div>
-
-        <div id="xbox-content" class="hidden">
-            <iframe src="https://www.xbox.com/en-US/play" title="Xbox Cloud Gaming"></iframe>
-        </div>
-
         <div id="privacy-policy" class="hidden">
             <div class="parallelogram">
                 <h2>Privacy Policy</h2>
@@ -256,14 +248,12 @@
     </footer>
 
     <script>
-        const loadingScreen = document.getElementById('loading-screen');
+        const loadingScreen = document.getElementById('loading-screen')
         const progress = document.getElementById('progress');
         const content = document.getElementById('content');
         const privacyPolicy = document.getElementById('privacy-policy');
         const popularGames = document.getElementById('popular-games');
         const chat = document.getElementById('chat');
-        const nvidiaContent = document.getElementById('nvidia-content');
-        const xboxContent = document.getElementById('xbox-content');
 
         // Show loading screen
         loadingScreen.style.display = 'flex';
@@ -278,22 +268,18 @@
                 clearInterval(loadingInterval);
                 loadingScreen.style.display = 'none'; // Hide loading screen
                 content.classList.remove('hidden'); // Show main content
+            }
+        }, 300); // Adjust the time for faster/slower loading
+
+        // Navigation Links
         document.getElementById('nvidia-link').addEventListener('click', (e) => {
             e.preventDefault();
             content.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
             chat.classList.add('hidden');
-            
-            // Show loading screen
-            loadingScreen.style.display = 'flex';
-            // Load NVIDIA iframe
-            setTimeout(() => {
-                loadingScreen.style.display = 'none'; // Hide loading screen
-                const iframe = document.createElement('iframe');
-                iframe.src = "https://www.nvidia.com/en-us/geforce/now/";
-                content.appendChild(iframe); // Add iframe to the content
-            }, 1000); // Simulate loading time
+            // Simulating the NVIDIA content
+            alert('Loading NVIDIA Cloud Gaming...');
         });
 
         document.getElementById('xbox-link').addEventListener('click', (e) => {
@@ -302,19 +288,34 @@
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
             chat.classList.add('hidden');
-            
-            // Show loading screen
-            loadingScreen.style.display = 'flex';
-            // Load Xbox iframe
-            setTimeout(() => {
-                loadingScreen.style.display = 'none'; // Hide loading screen
-                const iframe = document.createElement('iframe');
-                iframe.src = "https://www.xbox.com/en-US/play";
-                content.appendChild(iframe); // Add iframe to the content
-            }, 1000); // Simulate loading time
+            // Simulating the Xbox content
+            alert('Loading Xbox Cloud Gaming...');
         });
 
-        // Other functionality remains unchanged
+        document.getElementById('privacy-policy-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            content.classList.add('hidden');
+            privacyPolicy.classList.remove('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.add('hidden');
+        });
+
+        document.getElementById('popular-games-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.remove('hidden');
+            chat.classList.add('hidden');
+        });
+
+        document.getElementById('chat-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.remove('hidden');
+        });
+
         // Chat functionality
         document.getElementById('send-button').addEventListener('click', () => {
             const chatMessage = document.getElementById('chat-message').value;
@@ -332,40 +333,6 @@
                 document.getElementById('send-button').click();
             }
         });
-
-        // Additional feature: a random game suggestion
-        const gameSuggestions = [
-            "Apex Legends",
-            "Genshin Impact",
-            "Minecraft",
-            "Among Us",
-            "Fall Guys"
-        ];
-
-        const randomGameButton = document.createElement('button');
-        randomGameButton.textContent = "Suggest a Game";
-        randomGameButton.style.padding = "10px";
-        randomGameButton.style.backgroundColor = "#00ff00";
-        randomGameButton.style.border = "none";
-        randomGameButton.style.cursor = "pointer";
-        randomGameButton.style.marginTop = "20px";
-        randomGameButton.style.transition = "background 0.3s";
-
-        randomGameButton.addEventListener('mouseenter', () => {
-            randomGameButton.style.backgroundColor = "#009900";
-        });
-
-        randomGameButton.addEventListener('mouseleave', () => {
-            randomGameButton.style.backgroundColor = "#00ff00";
-        });
-
-        randomGameButton.addEventListener('click', () => {
-            const randomGame = gameSuggestions[Math.floor(Math.random() * gameSuggestions.length)];
-            alert(`How about playing: ${randomGame}?`);
-        });
-
-        document.getElementById('main-content').appendChild(randomGameButton);
-
     </script>
 </body>
 </html>
