@@ -15,20 +15,18 @@ RUN echo 'worker_processes 1;' > /etc/nginx/nginx.conf && \
     echo '        listen 80;' >> /etc/nginx/nginx.conf && \
     echo '' >> /etc/nginx/nginx.conf && \
     echo '        location / {' >> /etc/nginx/nginx.conf && \
-    echo '            root   /usr/share/nginx/html;' >> /etc/nginx/nginx.conf && \
-    echo '            index  index.html index.htm;' >> /etc/nginx/nginx.conf && \
-    echo '            try_files $uri $uri/ =404;' >> /etc/nginx/nginx.conf && \
+    echo '            root /usr/share/nginx/html;' >> /etc/nginx/nginx.conf && \
+    echo '            index index.html;' >> /etc/nginx/nginx.conf && \
     echo '        }' >> /etc/nginx/nginx.conf && \
     echo '' >> /etc/nginx/nginx.conf && \
-    echo '        # Forward Proxy Configuration' >> /etc/nginx/nginx.conf && \
     echo '        location /proxy/ {' >> /etc/nginx/nginx.conf && \
-    echo '            resolver 8.8.8.8;  # Use Google DNS' >> /etc/nginx/nginx.conf && \
-    echo '            set $target $arg_url;  # Get the target URL from the query string' >> /etc/nginx/nginx.conf && \
-    echo '            proxy_pass http://$target;  # Forward the request to the target' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_pass $arg_url;  # Target URL from query string' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header Host $host;' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header X-Real-IP $remote_addr;' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' >> /etc/nginx/nginx.conf && \
     echo '            proxy_set_header X-Forwarded-Proto $scheme;' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_hide_header X-Frame-Options;' >> /etc/nginx/nginx.conf && \
+    echo '            proxy_hide_header Content-Security-Policy;' >> /etc/nginx/nginx.conf && \
     echo '        }' >> /etc/nginx/nginx.conf && \
     echo '    }' >> /etc/nginx/nginx.conf && \
     echo '}' >> /etc/nginx/nginx.conf
