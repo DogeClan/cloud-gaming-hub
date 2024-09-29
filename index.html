@@ -14,7 +14,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
-            overflow: hidden; /* Prevent overflow */
+            overflow: hidden;
         }
 
         header {
@@ -68,7 +68,7 @@
             width: 0;
             height: 5px;
             background: #00ff00;
-            transition: width 0.1s; /* Smooth transition for progress */
+            transition: width 0.1s;
         }
 
         iframe {
@@ -122,7 +122,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: phase 3s infinite alternate;
-            perspective: 1000px;
             display: inline-block;
         }
 
@@ -136,6 +135,31 @@
             100% {
                 transform: rotateY(-10deg) translateZ(0);
             }
+        }
+
+        /* New 3D Rotation Animation */
+        @keyframes rotate {
+            0% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+            25% {
+                transform: rotateY(10deg) rotateX(10deg);
+            }
+            50% {
+                transform: rotateY(0deg) rotateX(10deg);
+            }
+            75% {
+                transform: rotateY(-10deg) rotateX(10deg);
+            }
+            100% {
+                transform: rotateY(0deg) rotateX(0deg);
+            }
+        }
+
+        .animated-header {
+            display: inline-block;
+            animation: rotate 5s infinite alternate;
+            perspective: 1000px;
         }
 
         /* Parallelogram Animation */
@@ -156,7 +180,7 @@
 </head>
 <body>
     <header>
-        <h1 class="animated-text">Cloud Gaming Hub</h1>
+        <h1 class="animated-text animated-header">Cloud Gaming Hub</h1>
     </header>
 
     <div class="loading-screen" id="loading-screen">
@@ -217,8 +241,6 @@
                 </div>
             </div>
         </div>
-
-        <iframe id="content-iframe" class="hidden" src=""></iframe>
     </div>
 
     <footer>
@@ -226,91 +248,91 @@
     </footer>
 
     <script>
-        const loadingScreen = document.getElementById('loading-screen');
+        const loadingScreen = document.getElementById('loading-screen')
         const progress = document.getElementById('progress');
         const content = document.getElementById('content');
         const privacyPolicy = document.getElementById('privacy-policy');
         const popularGames = document.getElementById('popular-games');
         const chat = document.getElementById('chat');
-        const chatBox = document.getElementById('chat-box');
-        const chatInput = document.getElementById('chat-message');
-        const sendButton = document.getElementById('send-button');
-        const contentIframe = document.getElementById('content-iframe');
 
+        // Show loading screen
+        loadingScreen.style.display = 'flex';
+        
+        // Simulate loading progress
+        let loadProgress = 0;
+        const loadingInterval = setInterval(() => {
+            loadProgress += 10; // Increase progress
+            progress.style.width = `${loadProgress}%`;
+
+            if (loadProgress >= 100) {
+                clearInterval(loadingInterval);
+                loadingScreen.style.display = 'none'; // Hide loading screen
+                content.classList.remove('hidden'); // Show main content
+            }
+        }, 300); // Adjust the time for faster/slower loading
+
+        // Navigation Links
         document.getElementById('nvidia-link').addEventListener('click', (e) => {
             e.preventDefault();
-            loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.add('hidden');
+            // Simulating the NVIDIA content
+            alert('Loading NVIDIA Cloud Gaming...');
         });
 
         document.getElementById('xbox-link').addEventListener('click', (e) => {
             e.preventDefault();
-            loadContent('https://www.xbox.com/en-US/live', 'Xbox Login');
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.add('hidden');
+            // Simulating the Xbox content
+            alert('Loading Xbox Cloud Gaming...');
         });
 
         document.getElementById('privacy-policy-link').addEventListener('click', (e) => {
             e.preventDefault();
-            loadSection(privacyPolicy);
+            content.classList.add('hidden');
+            privacyPolicy.classList.remove('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.add('hidden');
         });
 
         document.getElementById('popular-games-link').addEventListener('click', (e) => {
             e.preventDefault();
-            loadSection(popularGames);
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.remove('hidden');
+            chat.classList.add('hidden');
         });
 
         document.getElementById('chat-link').addEventListener('click', (e) => {
             e.preventDefault();
-            loadSection(chat);
+            content.classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            chat.classList.remove('hidden');
         });
 
-        function loadContent(url, title) {
-            loadingScreen.style.display = 'flex';
-            content.style.opacity = 0;
-            contentIframe.classList.add('hidden'); // Hide iframe during loading
+        // Chat functionality
+        document.getElementById('send-button').addEventListener('click', () => {
+            const chatMessage = document.getElementById('chat-message').value;
+            if (chatMessage) {
+                const newMessage = document.createElement('p');
+                newMessage.textContent = `You: ${chatMessage}`;
+                document.getElementById('chat-box').appendChild(newMessage);
+                document.getElementById('chat-message').value = ''; // Clear input
+            }
+        });
 
-            // Simulate loading progress
-            let width = 0;
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        loadIframe(url);
-                        loadingScreen.style.display = 'none';
-                    }, 500); // Delay before loading new content
-                } elseconst iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.title = title;
-            iframe.onload = () => {
-                content.appendChild(iframe);
-                content.style.opacity = 1;
-            };
-            content.innerHTML = ''; // Clear previous content
-            content.appendChild(iframe); // Append new iframe to content
-        }
-
-        function loadSection(section) {
-            loadingScreen.style.display = 'flex';
-            content.style.opacity = 0;
-
-            // Simulate loading progress
-            let width = 0;
-            const interval = setInterval(() => {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        content.innerHTML = ''; // Clear previous content
-                        content.appendChild(section);
-                        content.style.opacity = 1;
-                        loadingScreen.style.display = 'none';
-                    }, 500); // Delay before showing new content
-                } else {
-                    width++;
-                    progress.style.width = width + '%';
-                }
-            }, 20); // Adjust the interval speed here if necessary
-        }
-
-        // Simulate loading the default platform on startup
-        loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
+        // Allow sending messages with Enter key
+        document.getElementById('chat-message').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('send-button').click();
+            }
+        });
     </script>
 </body>
 </html>
