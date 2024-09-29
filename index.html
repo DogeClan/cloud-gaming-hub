@@ -217,6 +217,8 @@
                 </div>
             </div>
         </div>
+
+        <iframe id="content-iframe" class="hidden" src=""></iframe>
     </div>
 
     <footer>
@@ -233,6 +235,7 @@
         const chatBox = document.getElementById('chat-box');
         const chatInput = document.getElementById('chat-message');
         const sendButton = document.getElementById('send-button');
+        const contentIframe = document.getElementById('content-iframe');
 
         document.getElementById('nvidia-link').addEventListener('click', (e) => {
             e.preventDefault();
@@ -262,6 +265,7 @@
         function loadContent(url, title) {
             loadingScreen.style.display = 'flex';
             content.style.opacity = 0;
+            contentIframe.classList.add('hidden'); // Hide iframe during loading
 
             // Simulate loading progress
             let width = 0;
@@ -269,9 +273,35 @@
                 if (width >= 100) {
                     clearInterval(interval);
                     setTimeout(() => {
-                        loadIframe(url, title);
+                        loadIframe(url);
                         loadingScreen.style.display = 'none';
                     }, 500); // Delay before loading new content
+                } elseconst iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.title = title;
+            iframe.onload = () => {
+                content.appendChild(iframe);
+                content.style.opacity = 1;
+            };
+            content.innerHTML = ''; // Clear previous content
+            content.appendChild(iframe); // Append new iframe to content
+        }
+
+        function loadSection(section) {
+            loadingScreen.style.display = 'flex';
+            content.style.opacity = 0;
+
+            // Simulate loading progress
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        content.innerHTML = ''; // Clear previous content
+                        content.appendChild(section);
+                        content.style.opacity = 1;
+                        loadingScreen.style.display = 'none';
+                    }, 500); // Delay before showing new content
                 } else {
                     width++;
                     progress.style.width = width + '%';
@@ -279,10 +309,8 @@
             }, 20); // Adjust the interval speed here if necessary
         }
 
-        function loadIframe(url, title) {
-            const iframe = document.createElement('iframe// Simulate loading the default platform on startup
+        // Simulate loading the default platform on startup
         loadContent('https://www.nvidia.com/en-us/geforce/gaming/', 'NVIDIA Login');
-
     </script>
 </body>
 </html>
