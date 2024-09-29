@@ -16,5 +16,9 @@ RUN npm install -g http-server && \
 # Expose the ports for both http-server and mitmproxy
 EXPOSE 8080 8081
 
-# Start mitmproxy and http-server in parallel
-CMD mitmproxy --mode transparent --showhost --listen-port 8081 & http-server . -p 8080
+# Create a script to start both servers
+RUN echo '#!/bin/sh\nmitmdump --mode transparent --showhost --listen-port 8081 &\nhttp-server . -p 8080' > start.sh && \
+    chmod +x start.sh
+
+# Start the script
+CMD ["./start.sh"]
