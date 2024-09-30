@@ -285,6 +285,29 @@
             animation-fill-mode: forwards;
         }
 
+        /* Chat Customization */
+        .chat-customization {
+            margin: 20px 0;
+        }
+
+        .chat-customization label {
+            margin-right: 10px;
+        }
+
+        /* Theme Preview */
+        .theme-preview {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+
+        .theme-swatch {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #fff;
+            cursor: pointer;
+        }
+
         /* Add media queries for responsiveness */
         @media (max-width: 768px) {
             header h1 {
@@ -337,6 +360,14 @@
                 </select>
             </li>
             <li>
+                Font Size: 
+                <select id="font-size-select">
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="small">Small</option>
+                </select>
+            </li>
+            <li>
                 Transition: 
                 <select id="transition-select">
                     <option value="none">None</option>
@@ -358,6 +389,12 @@
             <div class="parallelogram">
                 <h2>Welcome to Cloud Gaming!</h2>
                 <p>Select a platform to start gaming.</p>
+            </div>
+            <div class="chat-customization">
+                <label for="chat-bg">Chat Background:</label>
+                <input type="color" id="chat-bg" value="#222222">
+                <label for="chat-text-color">Chat Text Color:</label>
+                <input type="color" id="chat-text-color" value="#ffffff">
             </div>
         </div>
 
@@ -468,7 +505,11 @@
         let uploadConfigBtn = document.getElementById('upload-config-btn');
         let themeSelect = document.getElementById('theme-select');
         let fontSelect = document.getElementById('font-select');
+        let fontSizeSelect = document.getElementById('font-size-select');
         let transitionSelect = document.getElementById('transition-select');
+        let chatBgColor = document.getElementById('chat-bg');
+        let chatTextColor = document.getElementById('chat-text-color');
+        let chatBox = document.getElementById('chat-box');
 
         // Show loading screen
         loadingScreen.style.display = 'flex';
@@ -596,6 +637,26 @@
             localStorage.setItem('selectedFont', selectedFont);
         };
 
+        // Font size adjustment
+        fontSizeSelect.onchange = function () {
+            const size = fontSizeSelect.value;
+            if (size === 'small') document.body.style.fontSize = '12px';
+            else if (size === 'large') document.body.style.fontSize = '18px';
+            else document.body.style.fontSize = '16px'; // default to medium
+            localStorage.setItem('fontSize', size);
+        };
+
+        // Chat Background and Text Color customization
+        chatBgColor.oninput = function () {
+            chatBox.style.backgroundColor = chatBgColor.value;
+            localStorage.setItem('chatBgColor', chatBgColor.value);
+        };
+
+        chatTextColor.oninput = function () {
+            chatBox.style.color = chatTextColor.value;
+            localStorage.setItem('chatTextColor', chatTextColor.value);
+        };
+
         // Transition effect customization
         transitionSelect.onchange = function () {
             const selectedTransition = transitionSelect.value;
@@ -618,7 +679,12 @@
                 username: localStorage.getItem('username'),
                 theme: themeSelect.value,
                 font: fontSelect.value,
+                fontSize: fontSizeSelect.value,
                 transition: transitionSelect.value,
+                chatMessageColors: {
+                    background: chatBgColor.value,
+                    text: chatTextColor.value
+                },
                 chatMessages: Array.from(document.getElementById('chat-box').children).map(p => p.textContent),
             };
             const configJSON = JSON.stringify(configData);
@@ -662,9 +728,22 @@
                         fontSelect.onchange(); // Apply font
                     }
 
+                    if (uploadedConfig.fontSize) {
+                        fontSizeSelect.value = uploadedConfig.fontSize;
+                        fontSizeSelect.onchange(); // Apply font size
+                    }
+
                     if (uploadedConfig.transition) {
                         transitionSelect.value = uploadedConfig.transition;
                         transitionSelect.onchange(); // Apply transition
+                    }
+
+                    if (uploadedConfig.chatMessageColors) {
+                        chatBgColor.value = uploadedConfig.chatMessageColors.background;
+                        chatBgColor.oninput(); // Apply chat background color
+
+                        chatTextColor.value = uploadedConfig.chatMessageColors.text;
+                        chatTextColor.oninput(); // Apply chat text color
                     }
 
                     if (uploadedConfig.chatMessages && Array.isArray(uploadedConfig.chatMessages)) {
@@ -676,7 +755,8 @@
                             chatBox.appendChild(newMessage);
                         });
                     }
-                    uploadMessage.textContent = 'Configuration uploaded successfully!';
+
+                    alert('Configuration uploaded successfully!');
                 };
                 reader.readAsText(file);
             } else {
@@ -688,8 +768,11 @@
         window.onload = function () {
             const savedTheme = localStorage.getItem('selectedTheme');
             const savedFont = localStorage.getItem('selectedFont');
+            const savedFontSize = localStorage.getItem('fontSize');
             const savedTransition = localStorage.getItem('selectedTransition');
             const darkLight = localStorage.getItem('darkLight');
+            const savedChatBgColor = localStorage.getItem('chatBgColor');
+            const savedChatTextColor = localStorage.getItem('chatTextColor');
 
             if (savedTheme) {
                 themeSelect.value = savedTheme;
@@ -699,6 +782,10 @@
                 fontSelect.value = savedFont;
                 fontSelect.onchange(); // Trigger change to apply
             }
+            if (savedFontSize) {
+                fontSizeSelect.value = savedFontSize;
+                fontSizeSelect.onchange(); // Trigger change to apply
+            }
             if (savedTransition) {
                 transitionSelect.value = savedTransition;
                 transitionSelect.onchange(); // Trigger change to apply
@@ -706,6 +793,14 @@
             if (darkLight === 'dark') {
                 document.body.classList.add('light-theme');
                 darkLightToggle.textContent = '🌙';
+            }
+            if (savedChatBgColor) {
+                chatBgColor.value = savedChatBgColor;
+                chatBgColor.oninput(); // Apply chat background
+            }
+            if (savedChatTextColor) {
+                chatTextColor.value = savedChatTextColor;
+                chatTextColor.oninput(); // Apply chat text color
             }
         };
 
