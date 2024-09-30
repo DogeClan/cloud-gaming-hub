@@ -4,23 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Gaming Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles */
         body {
-            background: #1a1a1a;
-            color: #f1f1f1;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #101010;
+            color: #e3e3e3;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Themes */
+        .light-theme {
+            background-color: #ffffff;
+            color: #101010;
+        }
+
+        .blue-theme {
+            background-color: #e6f0fa;
+            color: #003366;
+        }
+
+        .green-theme {
+            background-color: #e2f5d4;
+            color: #2a623d;
         }
 
         header {
-            background: #000;
-            padding: 10px;
+            background-color: #1c1c1c;
+            padding: 20px;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            animation: slideIn 0.8s forwards;
+            opacity: 0;
+        }
+
+        nav {
+            background: #212121;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         nav ul {
@@ -28,27 +64,43 @@
             padding: 0;
             display: flex;
             justify-content: center;
+            margin: 0;
         }
 
         nav ul li {
-            margin: 0 15px;
+            margin: 0 20px;
         }
 
         nav ul li a {
             color: #00ff00;
             text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        #dark-light-toggle {
+            margin-left: 20px;
+            cursor: pointer;
+            font-size: 1em;
         }
 
         #main-content {
             flex: 1;
             overflow: auto;
             padding: 20px;
+            position: relative;
         }
 
         footer {
-            background: #000;
+            background: #1c1c1c;
             text-align: center;
             padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .loading-screen {
@@ -62,6 +114,7 @@
             justify-content: center;
             align-items: center;
             color: #fff;
+            font-size: 1.5em;
         }
 
         .loading-screen #progress {
@@ -76,6 +129,8 @@
             height: 400px;
             border: none;
             background: #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .hidden {
@@ -88,6 +143,9 @@
             height: 300px;
             overflow-y: scroll;
             margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .chat-input {
@@ -101,86 +159,152 @@
             border: 1px solid #00ff00;
             background: #222;
             color: #fff;
+            border-radius: 5px;
         }
 
         .chat-input button {
             padding: 10px;
             background: #00ff00;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
         }
 
         .chat-input button:hover {
             background: #009900;
         }
 
-        /* 3D Text Effect */
-        .animated-text {
-            font-size: 3em;
-            font-weight: bold;
-            background: linear-gradient(45deg, orange, yellow, green, red);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: phase 3s infinite alternate;
-            display: inline-block;
+        .game-filter {
+            margin: 20px 0;
         }
 
-        @keyframes phase {
-            0% {
-                transform: rotateY(0deg) translateZ(0);
-            }
-            50% {
-                transform: rotateY(10deg) translateZ(30px);
-            }
-            100% {
-                transform: rotateY(-10deg) translateZ(0);
-            }
-        }
-
-        /* New 3D Rotation Animation */
-        @keyframes rotate {
-            0% {
-                transform: rotateY(0deg) rotateX(0deg);
-            }
-            25% {
-                transform: rotateY(10deg) rotateX(10deg);
-            }
-            50% {
-                transform: rotateY(0deg) rotateX(10deg);
-            }
-            75% {
-                transform: rotateY(-10deg) rotateX(10deg);
-            }
-            100% {
-                transform: rotateY(0deg) rotateX(0deg);
-            }
-        }
-
-        .animated-header {
-            display: inline-block;
-            animation: rotate 5s infinite alternate;
-            perspective: 1000px;
-        }
-
-        /* Parallelogram Animation */
+        /* Parallelogram Design */
         .parallelogram {
             display: inline-block;
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            transition: transform 0.5s ease-in-out;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transform: skew(-10deg);
+            transition: transform 0.3s ease;
         }
 
         .parallelogram:hover {
-            transform: skew(-10deg) translateY(-10px);
+            transform: skew(-10deg) translateY(-5px);
             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Login/Register Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #292929;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: #00ff00;
+            float: right;
+            font-size: 1.5em;
+        }
+
+        .close-btn:hover {
+            color: #009900;
+        }
+
+        /* User Registration/Login Form */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            margin: 20px 0;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0.8);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* Transition Effect Class */
+        .transition-effect {
+            animation-duration: 0.5s;
+            animation-fill-mode: forwards;
+        }
+
+        /* Add media queries for responsiveness */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .chat-box {
+                height: 200px; /* Reduced height for small screens */
+            }
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="animated-text animated-header">Cloud Gaming Hub</h1>
+        <h1 class="animated-text">Cloud Gaming Hub</h1>
     </header>
 
     <div class="loading-screen" id="loading-screen">
@@ -189,16 +313,48 @@
 
     <nav>
         <ul>
-            <li><a href="#" id="nvidia-link"><img src="nvidia-logo.png" alt="NVIDIA Logo">NVIDIA</a></li>
-            <li><a href="#" id="xbox-link"><img src="xbox-logo.png" alt="Xbox Logo">Xbox</a></li>
+            <li><a href="#" id="nvidia-link">NVIDIA</a></li>
+            <li><a href="#" id="xbox-link">Xbox</a></li>
             <li><a href="#" id="privacy-policy-link">Privacy Policy</a></li>
             <li><a href="#" id="popular-games-link">Popular Games</a></li>
             <li><a href="#" id="chat-link">Chat</a></li>
+            <li id="dark-light-toggle">🌙/🌞</li>
+            <li>
+                Theme: 
+                <select id="theme-select">
+                    <option value="default">Default</option>
+                    <option value="light">Light</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                </select>
+            </li>
+            <li>
+                Font: 
+                <select id="font-select">
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Montserrat">Montserrat</option>
+                </select>
+            </li>
+            <li>
+                Transition: 
+                <select id="transition-select">
+                    <option value="none">None</option>
+                    <option value="fade">Fade</option>
+                    <option value="zoom">Zoom</option>
+                </select>
+            </li>
+            <li><a href="#" id="login-link">Login/Register</a></li>
+            <li><a href="#" id="save-config-link">Save Config</a></li>
+            <li><a href="#" id="upload-config-link">Upload Config</a></li>
         </ul>
     </nav>
 
     <div id="main-content">
         <div class="content" id="content">
+            <div class="game-filter">
+                <input type="text" id="game-search" placeholder="Search for games..." />
+            </div>
             <div class="parallelogram">
                 <h2>Welcome to Cloud Gaming!</h2>
                 <p>Select a platform to start gaming.</p>
@@ -224,7 +380,7 @@
         <div id="popular-games" class="hidden">
             <div class="parallelogram">
                 <h2>Popular Games</h2>
-                <ul>
+                <ul id="game-list">
                     <li>The Witcher 3</li>
                     <li>Halo Infinite</li>
                     <li>Fortnite</li>
@@ -255,19 +411,68 @@
         &copy; 2024 Cloud Gaming Hub. All rights reserved.
     </footer>
 
+    <!-- User Login/Register Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">&times;</span>
+            <h2 id="modal-title">Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Submit</button>
+                <p id="login-message" style="color: #00ff00;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- File upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-upload-modal">&times;</span>
+            <h2>Upload Configuration File</h2>
+            <input type="file" id="config-upload" accept=".json">
+            <button id="upload-config-btn">Upload</button>
+            <p id="upload-message" style="color: #00ff00;"></p>
+        </div>
+    </div>
+
     <script>
-        const loadingScreen = document.getElementById('loading-screen');
-        const progress = document.getElementById('progress');
-        const content = document.getElementById('content');
-        const privacyPolicy = document.getElementById('privacy-policy');
-        const popularGames = document.getElementById('popular-games');
-        const chat = document.getElementById('chat');
-        const nvidiaIframe = document.getElementById('nvidia-iframe');
-        const xboxIframe = document.getElementById('xbox-iframe');
+        let loadingScreen = document.getElementById('loading-screen');
+        let progress = document.getElementById('progress');
+        let content = document.getElementById('content');
+        let privacyPolicy = document.getElementById('privacy-policy');
+        let popularGames = document.getElementById('popular-games');
+        let chat = document.getElementById('chat');
+        let nvidiaIframe = document.getElementById('nvidia-iframe');
+        let xboxIframe = document.getElementById('xbox-iframe');
+        let gameList = document.getElementById('game-list');
+        let gameSearch = document.getElementById('game-search');
+        let loginLink = document.getElementById('login-link');
+        let modal = document.getElementById('modal');
+        let closeModal = document.getElementById('close-modal');
+        let loginForm = document.getElementById('login-form');
+        let loginMessage = document.getElementById('login-message');
+        let darkLightToggle = document.getElementById('dark-light-toggle');
+        let saveConfigLink = document.getElementById('save-config-link');
+        let uploadConfigLink = document.getElementById('upload-config-link');
+        let uploadModal = document.getElementById('upload-modal');
+        let closeUploadModal = document.getElementById('close-upload-modal');
+        let uploadMessage = document.getElementById('upload-message');
+        let configUpload = document.getElementById('config-upload');
+        let uploadConfigBtn = document.getElementById('upload-config-btn');
+        let themeSelect = document.getElementById('theme-select');
+        let fontSelect = document.getElementById('font-select');
+        let transitionSelect = document.getElementById('transition-select');
 
         // Show loading screen
         loadingScreen.style.display = 'flex';
-        
+
         // Simulate loading progress
         let loadProgress = 0;
         const loadingInterval = setInterval(() => {
@@ -279,10 +484,10 @@
                 loadingScreen.style.display = 'none'; // Hide loading screen
                 content.classList.remove('hidden'); // Show main content
             }
-        }, 300); // Adjust the time for faster loading simulation
+        }, 300);
 
-        // Navigation links
-        document.getElementById('nvidia-link').onclick = function() {
+        // Navigation links functionality
+        document.getElementById('nvidia-link').onclick = function () {
             nvidiaIframe.classList.remove('hidden');
             xboxIframe.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
@@ -290,7 +495,7 @@
             chat.classList.add('hidden');
         };
 
-        document.getElementById('xbox-link').onclick = function() {
+        document.getElementById('xbox-link').onclick = function () {
             xboxIframe.classList.remove('hidden');
             nvidiaIframe.classList.add('hidden');
             privacyPolicy.classList.add('hidden');
@@ -298,7 +503,7 @@
             chat.classList.add('hidden');
         };
 
-        document.getElementById('privacy-policy-link').onclick = function() {
+        document.getElementById('privacy-policy-link').onclick = function () {
             privacyPolicy.classList.remove('hidden');
             nvidiaIframe.classList.add('hidden');
             xboxIframe.classList.add('hidden');
@@ -306,7 +511,7 @@
             chat.classList.add('hidden');
         };
 
-        document.getElementById('popular-games-link').onclick = function() {
+        document.getElementById('popular-games-link').onclick = function () {
             popularGames.classList.remove('hidden');
             nvidiaIframe.classList.add('hidden');
             xboxIframe.classList.add('hidden');
@@ -314,7 +519,7 @@
             chat.classList.add('hidden');
         };
 
-        document.getElementById('chat-link').onclick = function() {
+        document.getElementById('chat-link').onclick = function () {
             chat.classList.remove('hidden');
             nvidiaIframe.classList.add('hidden');
             xboxIframe.classList.add('hidden');
@@ -322,28 +527,199 @@
             popularGames.classList.add('hidden');
         };
 
-        // Chat functionality
-        const sendButton = document.getElementById('send-button');
-        const chatMessage = document.getElementById('chat-message');
-        const chatBox = document.getElementById('chat-box');
+        // Game filter functionality
+        gameSearch.addEventListener('input', function() {
+            const filter = gameSearch.value.toLowerCase();
+            const games = gameList.getElementsByTagName('li');
+            Array.from(games).forEach((game) => {
+                const gameText = game.textContent || game.innerText;
+                game.style.display = gameText.toLowerCase().includes(filter) ? "" : "none";
+            });
+        });
 
-        sendButton.onclick = function() {
-            const message = chatMessage.value.trim();
-            if (message) {
-                const newMessage = document.createElement('p');
-                newMessage.textContent = `You: ${message}`;
-                chatBox.appendChild(newMessage);
-                chatMessage.value = ''; // Clear the input
-                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to bottom
+        // User Login/Register functionality
+        loginLink.onclick = function () {
+            modal.style.display = 'flex';
+        };
+
+        closeModal.onclick = function () {
+            modal.style.display = 'none';
+            loginMessage.textContent = '';
+        };
+
+        loginForm.onsubmit = function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (username && password) {
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                loginMessage.textContent = `Welcome, ${username}`;
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    loginMessage.textContent = ''; // Clear login message
+                }, 2000);
             }
         };
 
-        // Allow pressing Enter to send message
-        chatMessage.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                sendButton.click(); // Trigger the send button
+        // Toggle between dark and light theme
+        darkLightToggle.onclick = function () {
+            const currentTheme = document.body.classList.contains('light-theme');
+            document.body.classList.toggle('light-theme', !currentTheme);
+            darkLightToggle.textContent = currentTheme ? '🌞' : '🌙';
+            localStorage.setItem('darkLight', !currentTheme ? 'dark' : 'light');
+        };
+
+        // Theme customization
+        themeSelect.onchange = function () {
+            const selectedTheme = themeSelect.value;
+            document.body.classList.remove('light-theme', 'blue-theme', 'green-theme');
+            if (selectedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            } else if (selectedTheme === 'blue') {
+                document.body.classList.add('blue-theme');
+            } else if (selectedTheme === 'green') {
+                document.body.classList.add('green-theme');
             }
-        });
+            localStorage.setItem('selectedTheme', selectedTheme);
+        };
+
+        // Font customization
+        fontSelect.onchange = function () {
+            const selectedFont = fontSelect.value;
+            document.body.style.fontFamily = selectedFont === 'Roboto' 
+                ? "'Roboto', sans-serif" 
+                : selectedFont === 'Open Sans' 
+                    ? "'Open Sans', sans-serif" 
+                    : "'Montserrat', sans-serif";
+            localStorage.setItem('selectedFont', selectedFont);
+        };
+
+        // Transition effect customization
+        transitionSelect.onchange = function () {
+            const selectedTransition = transitionSelect.value;
+            const elements = document.querySelectorAll('.transition-effect');
+            elements.forEach(element => {
+                element.classList.remove('fade', 'zoom');
+                element.classList.remove('transition-effect'); // Remove previous transition
+            });
+            if (selectedTransition === "fade") {
+                elements.forEach(element => element.classList.add('fade'));
+            } else if (selectedTransition === "zoom") {
+                elements.forEach(element => element.classList.add('zoom'));
+            }
+            localStorage.setItem('selectedTransition', selectedTransition);
+        };
+
+        // Save Configuration Feature
+        saveConfigLink.onclick = function () {
+            const configData = {
+                username: localStorage.getItem('username'),
+                theme: themeSelect.value,
+                font: fontSelect.value,
+                transition: transitionSelect.value,
+                chatMessages: Array.from(document.getElementById('chat-box').children).map(p => p.textContent),
+            };
+            const configJSON = JSON.stringify(configData);
+            const blob = new Blob([configJSON], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'user-config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('Configuration saved!');
+        };
+
+        // Upload Configuration File
+        uploadConfigLink.onclick = function () {
+            uploadModal.style.display = 'flex';
+        };
+
+        closeUploadModal.onclick = function () {
+            uploadModal.style.display = 'none';
+            uploadMessage.textContent = '';
+        };
+
+        uploadConfigBtn.onclick = function () {
+            const file = configUpload.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const uploadedConfig = JSON.parse(event.target.result);
+                    if(uploadedConfig.username) {
+                        localStorage.setItem('username', uploadedConfig.username);
+                    }
+
+                    if (uploadedConfig.theme) {
+                        themeSelect.value = uploadedConfig.theme;
+                        themeSelect.onchange(); // Apply theme
+                    }
+
+                    if (uploadedConfig.font) {
+                        fontSelect.value = uploadedConfig.font;
+                        fontSelect.onchange(); // Apply font
+                    }
+
+                    if (uploadedConfig.transition) {
+                        transitionSelect.value = uploadedConfig.transition;
+                        transitionSelect.onchange(); // Apply transition
+                    }
+
+                    if (uploadedConfig.chatMessages && Array.isArray(uploadedConfig.chatMessages)) {
+                        const chatBox = document.getElementById('chat-box');
+                        chatBox.innerHTML = ''; // Clear existing messages
+                        uploadedConfig.chatMessages.forEach(message => {
+                            const newMessage = document.createElement('p');
+                            newMessage.textContent = message;
+                            chatBox.appendChild(newMessage);
+                        });
+                    }
+                    uploadMessage.textContent = 'Configuration uploaded successfully!';
+                };
+                reader.readAsText(file);
+            } else {
+                uploadMessage.textContent = 'Please select a valid file.';
+            }
+        };
+
+        // Apply saved preferences on load
+        window.onload = function () {
+            const savedTheme = localStorage.getItem('selectedTheme');
+            const savedFont = localStorage.getItem('selectedFont');
+            const savedTransition = localStorage.getItem('selectedTransition');
+            const darkLight = localStorage.getItem('darkLight');
+
+            if (savedTheme) {
+                themeSelect.value = savedTheme;
+                themeSelect.onchange(); // Trigger change to apply
+            }
+            if (savedFont) {
+                fontSelect.value = savedFont;
+                fontSelect.onchange(); // Trigger change to apply
+            }
+            if (savedTransition) {
+                transitionSelect.value = savedTransition;
+                transitionSelect.onchange(); // Trigger change to apply
+            }
+            if (darkLight === 'dark') {
+                document.body.classList.add('light-theme');
+                darkLightToggle.textContent = '🌙';
+            }
+        };
+
+        // Click outside modal close functionality
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                loginMessage.textContent = ''; // Clear login message
+            } 
+            if (event.target === uploadModal) {
+                uploadModal.style.display = "none";
+                uploadMessage.textContent = ''; // Clear upload message
+            }
+        };
     </script>
 </body>
 </html>
