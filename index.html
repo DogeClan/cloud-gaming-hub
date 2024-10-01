@@ -28,16 +28,7 @@
             color: #101010;
         }
 
-        .blue-theme {
-            background-color: #e6f0fa;
-            color: #003366;
-        }
-
-        .green-theme {
-            background-color: #e2f5d4;
-            color: #2a623d;
-        }
-
+        /* Header and Footer */
         header {
             background-color: #1c1c1c;
             padding: 20px;
@@ -48,10 +39,16 @@
         header h1 {
             font-size: 2.5em;
             margin: 0;
-            animation: slideIn 0.8s forwards;
-            opacity: 0;
         }
 
+        footer {
+            background: #1c1c1c;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation */
         nav {
             background: #212121;
             position: sticky;
@@ -83,24 +80,12 @@
             background-color: rgba(0, 255, 0, 0.1);
         }
 
-        #dark-light-toggle {
-            margin-left: 20px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
+        /* Main Content */
         #main-content {
             flex: 1;
             overflow: auto;
             padding: 20px;
             position: relative;
-        }
-
-        footer {
-            background: #1c1c1c;
-            text-align: center;
-            padding: 10px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .loading-screen {
@@ -137,6 +122,7 @@
             display: none;
         }
 
+        /* Chat Box */
         .chat-box {
             border: 1px solid #00ff00;
             padding: 10px;
@@ -176,28 +162,7 @@
             background: #009900;
         }
 
-        .game-filter {
-            margin: 20px 0;
-        }
-
-        /* Parallelogram Design */
-        .parallelogram {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 20px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transform: skew(-10deg);
-            transition: transform 0.3s ease;
-        }
-
-        .parallelogram:hover {
-            transform: skew(-10deg) translateY(-5px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Login/Register Modal */
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -228,87 +193,47 @@
             color: #009900;
         }
 
-        /* User Registration/Login Form */
-        .form-group {
+        /* Reviews Section */
+        .reviews-section {
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .review {
             margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group input {
-            width: 100%;
             padding: 10px;
             border: 1px solid #00ff00;
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
-        /* File Upload Styles */
-        .file-upload {
+        /* Game Comparison Section */
+        .comparison-section {
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            padding: 15px;
             margin: 20px 0;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        @keyframes fade {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: center;
         }
 
-        @keyframes zoom {
-            from {
-                transform: scale(0.8);
-            }
-            to {
-                transform: scale(1);
-            }
+        .comparison-table th {
+            background-color: rgba(0, 255, 0, 0.2);
         }
 
-        /* Transition Effect Class */
-        .transition-effect {
-            animation-duration: 0.5s;
-            animation-fill-mode: forwards;
-        }
-
-        /* Chat Customization */
-        .chat-customization {
-            margin: 20px 0;
-        }
-
-        .chat-customization label {
-            margin-right: 10px;
-        }
-
-        /* Theme Preview */
-        .theme-preview {
-            display: flex;
-            justify-content: space-around;
-            margin: 10px 0;
-        }
-
-        .theme-swatch {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #fff;
-            cursor: pointer;
-        }
-
-        /* Add media queries for responsiveness */
+        /* Media Queries */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2em;
@@ -340,6 +265,9 @@
             <li><a href="#" id="xbox-link">Xbox</a></li>
             <li><a href="#" id="privacy-policy-link">Privacy Policy</a></li>
             <li><a href="#" id="popular-games-link">Popular Games</a></li>
+            <li><a href="#" id="reviews-link">Reviews</a></li>
+            <li><a href="#" id="comparison-link">Game Comparison</a></li>
+            <li><a href="#" id="forum-link">Community Forum</a></li>
             <li><a href="#" id="chat-link">Chat</a></li>
             <li id="dark-light-toggle">🌙/🌞</li>
             <li>
@@ -399,11 +327,11 @@
         </div>
 
         <div id="nvidia-iframe" class="hidden">
-            <iframe src="https://play.geforcenow.com/" title="NVIDIA Cloud Gaming"></iframe>
+            <iframe id="nvidia-iframe-src" title="NVIDIA Cloud Gaming"></iframe>
         </div>
 
         <div id="xbox-iframe" class="hidden">
-            <iframe src="https://www.xbox.com/en-US/play" title="Xbox Cloud Gaming"></iframe>
+            <iframe id="xbox-iframe-src" title="Xbox Cloud Gaming"></iframe>
         </div>
 
         <div id="privacy-policy" class="hidden">
@@ -427,31 +355,86 @@
             </div>
         </div>
 
+        <div id="reviews" class="hidden reviews-section">
+            <h2>User Reviews</h2>
+            <div id="reviews-list"></div>
+            <input type="text" id="review-input" placeholder="Write a review..." />
+            <button id="submit-review">Submit Review</button>
+        </div>
+
+        <div id="comparison" class="hidden comparison-section">
+            <h2>Game Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>NVIDIA GeForce NOW</th>
+                        <th>Xbox Cloud Gaming</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Supported Devices</td>
+                        <td>PC, Mobile, Smart TVs</td>
+                        <td>PC, Mobile, Consoles</td>
+                    </tr>
+                    <tr>
+                        <td>Game Library</td>
+                        <td>220+ Games</td>
+                        <td>100+ Games</td>
+                    </tr>
+                    <tr>
+                        <td>Streaming Quality</td>
+                        <td>Up to 4K</td>
+                        <td>Up to 1080p</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Subscription</td>
+                        <td>$4.99</td>
+                        <td>$14.99</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="forum" class="hidden">
+            <h2>Community Forum</h2>
+            <h3>Discussion Topics</h3>
+            <div id="forum-topics">
+                <ul>
+                    <li><strong>Best Cloud Gaming Practices</strong></li>
+                    <li><strong>Hardware Recommendations</strong></li>
+                    <li><strong>Upcoming Game Releases</strong></li>
+                </ul>
+            </div>
+            <h3>Start a New Topic</h3>
+            <input type="text" id="forum-topic" placeholder="Enter topic title..." />
+            <button id="forum-submit">Post Topic</button>
+        </div>
+
         <div id="chat" class="hidden">
             <div class="parallelogram">
                 <h2>Chat Room</h2>
-                <div id="chat-box" class="chat-box">
-                    <p>User1: Hey there!</p>
-                    <p>User2: Hello! What games are you playing?</p>
-                    <p>User1: I'm into Fortnite right now.</p>
-                    <p>User2: Nice! I love that game too!</p>
+                <div class="chat-box" id="chat-box">
+                    <!-- Chat Messages will be added here -->
                 </div>
                 <div class="chat-input">
-                    <input type="text" id="chat-message" placeholder="Type a message..." />
+                    <input type="text" id="chat-message" placeholder="Type your message..." />
                     <button id="send-button">Send</button>
                 </div>
             </div>
         </div>
+
     </div>
 
     <footer>
-        &copy; 2024 Cloud Gaming Hub. All rights reserved.
+        © 2024 Cloud Gaming Hub. All rights reserved.
     </footer>
 
     <!-- User Login/Register Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" id="close-modal">&times;</span>
+            <span class="close-btn" id="close-modal">×</span>
             <h2 id="modal-title">Login</h2>
             <form id="login-form">
                 <div class="form-group">
@@ -471,7 +454,7 @@
     <!-- File upload Modal -->
     <div id="upload-modal" class="modal">
         <div class="modal-content">
-            <span class="close-btn" id="close-upload-modal">&times;</span>
+            <span class="close-btn" id="close-upload-modal">×</span>
             <h2>Upload Configuration File</h2>
             <input type="file" id="config-upload" accept=".json">
             <button id="upload-config-btn">Upload</button>
@@ -485,9 +468,12 @@
         let content = document.getElementById('content');
         let privacyPolicy = document.getElementById('privacy-policy');
         let popularGames = document.getElementById('popular-games');
+        let reviewsSection = document.getElementById('reviews');
+        let comparisonSection = document.getElementById('comparison');
+        let forumSection = document.getElementById('forum');
         let chat = document.getElementById('chat');
-        let nvidiaIframe = document.getElementById('nvidia-iframe');
-        let xboxIframe = document.getElementById('xbox-iframe');
+        let nvidiaIframeSrc = document.getElementById('nvidia-iframe-src');
+        let xboxIframeSrc = document.getElementById('xbox-iframe-src');
         let gameList = document.getElementById('game-list');
         let gameSearch = document.getElementById('game-search');
         let loginLink = document.getElementById('login-link');
@@ -510,6 +496,12 @@
         let chatBgColor = document.getElementById('chat-bg');
         let chatTextColor = document.getElementById('chat-text-color');
         let chatBox = document.getElementById('chat-box');
+        let chatInput = document.getElementById('chat-message');
+        let sendButton = document.getElementById('send-button');
+        let reviewInput = document.getElementById('review-input');
+        let submitReviewButton = document.getElementById('submit-review');
+        let forumTopicInput = document.getElementById('forum-topic');
+        let forumSubmitButton = document.getElementById('forum-submit');
 
         // Show loading screen
         loadingScreen.style.display = 'flex';
@@ -528,44 +520,94 @@
         }, 300);
 
         // Navigation links functionality
-        document.getElementById('nvidia-link').onclick = function () {
-            nvidiaIframe.classList.remove('hidden');
-            xboxIframe.classList.add('hidden');
+        document.getElementById('nvidia-link').onclick = function() {
+            nvidiaIframeSrc.src = "https://api.codetabs.com/v1/proxy?quest=http://play.geforcenow.com/";
+            document.getElementById('nvidia-iframe').classList.remove('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
             chat.classList.add('hidden');
         };
 
-        document.getElementById('xbox-link').onclick = function () {
-            xboxIframe.classList.remove('hidden');
-            nvidiaIframe.classList.add('hidden');
+        document.getElementById('xbox-link').onclick = function() {
+            xboxIframeSrc.src = "https://api.codetabs.com/v1/proxy?quest=http://www.xbox.com/en-US/play";
+            document.getElementById('xbox-iframe').classList.remove('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
             chat.classList.add('hidden');
         };
 
-        document.getElementById('privacy-policy-link').onclick = function () {
+        document.getElementById('privacy-policy-link').onclick = function() {
             privacyPolicy.classList.remove('hidden');
-            nvidiaIframe.classList.add('hidden');
-            xboxIframe.classList.add('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
             popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
             chat.classList.add('hidden');
         };
 
-        document.getElementById('popular-games-link').onclick = function () {
+        document.getElementById('popular-games-link').onclick = function() {
             popularGames.classList.remove('hidden');
-            nvidiaIframe.classList.add('hidden');
-            xboxIframe.classList.add('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
             privacyPolicy.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
             chat.classList.add('hidden');
         };
 
-        document.getElementById('chat-link').onclick = function () {
-            chat.classList.remove('hidden');
-            nvidiaIframe.classList.add('hidden');
-            xboxIframe.classList.add('hidden');
+        document.getElementById('reviews-link').onclick = function() {
+            reviewsSection.classList.remove('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
             privacyPolicy.classList.add('hidden');
             popularGames.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
+            chat.classList.add('hidden');
+        };
+
+        document.getElementById('comparison-link').onclick = function() {
+            comparisonSection.classList.remove('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
+            chat.classList.add('hidden');
+        };
+
+        document.getElementById('forum-link').onclick = function() {
+            forumSection.classList.remove('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            chat.classList.add('hidden');
+        };
+
+        document.getElementById('chat-link').onclick = function() {
+            chat.classList.remove('hidden');
+            document.getElementById('nvidia-iframe').classList.add('hidden');
+            document.getElementById('xbox-iframe').classList.add('hidden');
+            privacyPolicy.classList.add('hidden');
+            popularGames.classList.add('hidden');
+            reviewsSection.classList.add('hidden');
+            comparisonSection.classList.add('hidden');
+            forumSection.classList.add('hidden');
         };
 
         // Game filter functionality
@@ -578,17 +620,63 @@
             });
         });
 
+        // Review submission functionality
+        submitReviewButton.onclick = function() {
+            const reviewText = reviewInput.value.trim();
+            if (reviewText) {
+                const newReview = document.createElement('div');
+                newReview.className = 'review';
+                newReview.innerHTML = `<strong>You:</strong> ${reviewText}`;
+                document.getElementById('reviews-list').appendChild(newReview);
+                reviewInput.value = ''; // Clear input
+                localStorage.setItem('reviews', JSON.stringify(getReviews()));
+            }
+        };
+
+        // Load existing reviews from local storage
+        function getReviews() {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            return reviews;
+        }
+
+        // Load reviews on page load
+        window.onload = function() {
+            const existingReviews = getReviews();
+            const reviewsList = document.getElementById('reviews-list');
+            existingReviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'review';
+                reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                reviewsList.appendChild(reviewDiv);
+            });
+        };
+
+        // Forum submission functionality
+        forumSubmitButton.onclick = function() {
+            const topicText = forumTopicInput.value.trim();
+            if (topicText) {
+                // Here you would typically make an API call to save the topic
+                const newTopic = document.createElement('li');
+                newTopic.textContent = topicText;
+                document.getElementById('forum-topics').appendChild(newTopic);
+                forumTopicInput.value = ''; // Clear input
+                alert(`New topic posted: ${topicText}`);
+            } else {
+                alert('Please enter a topic title.');
+            }
+        };
+
         // User Login/Register functionality
-        loginLink.onclick = function () {
+        loginLink.onclick = function() {
             modal.style.display = 'flex';
         };
 
-        closeModal.onclick = function () {
+        closeModal.onclick = function() {
             modal.style.display = 'none';
             loginMessage.textContent = '';
         };
 
-        loginForm.onsubmit = function (e) {
+        loginForm.onsubmit = function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
@@ -605,7 +693,7 @@
         };
 
         // Toggle between dark and light theme
-        darkLightToggle.onclick = function () {
+        darkLightToggle.onclick = function() {
             const currentTheme = document.body.classList.contains('light-theme');
             document.body.classList.toggle('light-theme', !currentTheme);
             darkLightToggle.textContent = currentTheme ? '🌞' : '🌙';
@@ -613,7 +701,7 @@
         };
 
         // Theme customization
-        themeSelect.onchange = function () {
+        themeSelect.onchange = function() {
             const selectedTheme = themeSelect.value;
             document.body.classList.remove('light-theme', 'blue-theme', 'green-theme');
             if (selectedTheme === 'light') {
@@ -627,7 +715,7 @@
         };
 
         // Font customization
-        fontSelect.onchange = function () {
+        fontSelect.onchange = function() {
             const selectedFont = fontSelect.value;
             document.body.style.fontFamily = selectedFont === 'Roboto' 
                 ? "'Roboto', sans-serif" 
@@ -638,7 +726,7 @@
         };
 
         // Font size adjustment
-        fontSizeSelect.onchange = function () {
+        fontSizeSelect.onchange = function() {
             const size = fontSizeSelect.value;
             if (size === 'small') document.body.style.fontSize = '12px';
             else if (size === 'large') document.body.style.fontSize = '18px';
@@ -647,45 +735,29 @@
         };
 
         // Chat Background and Text Color customization
-        chatBgColor.oninput = function () {
+        chatBgColor.oninput = function() {
             chatBox.style.backgroundColor = chatBgColor.value;
             localStorage.setItem('chatBgColor', chatBgColor.value);
         };
 
-        chatTextColor.oninput = function () {
+        chatTextColor.oninput = function() {
             chatBox.style.color = chatTextColor.value;
             localStorage.setItem('chatTextColor', chatTextColor.value);
         };
 
-        // Transition effect customization
-        transitionSelect.onchange = function () {
-            const selectedTransition = transitionSelect.value;
-            const elements = document.querySelectorAll('.transition-effect');
-            elements.forEach(element => {
-                element.classList.remove('fade', 'zoom');
-                element.classList.remove('transition-effect'); // Remove previous transition
-            });
-            if (selectedTransition === "fade") {
-                elements.forEach(element => element.classList.add('fade'));
-            } else if (selectedTransition === "zoom") {
-                elements.forEach(element => element.classList.add('zoom'));
-            }
-            localStorage.setItem('selectedTransition', selectedTransition);
-        };
-
         // Save Configuration Feature
-        saveConfigLink.onclick = function () {
+        saveConfigLink.onclick = function() {
             const configData = {
                 username: localStorage.getItem('username'),
                 theme: themeSelect.value,
                 font: fontSelect.value,
                 fontSize: fontSizeSelect.value,
-                transition: transitionSelect.value,
                 chatMessageColors: {
                     background: chatBgColor.value,
-                    text: chatTextColor.value
+                    text: chatTextColor.value,
                 },
                 chatMessages: Array.from(document.getElementById('chat-box').children).map(p => p.textContent),
+                reviews: getReviews()
             };
             const configJSON = JSON.stringify(configData);
             const blob = new Blob([configJSON], { type: "application/json" });
@@ -699,22 +771,22 @@
         };
 
         // Upload Configuration File
-        uploadConfigLink.onclick = function () {
+        uploadConfigLink.onclick = function() {
             uploadModal.style.display = 'flex';
         };
 
-        closeUploadModal.onclick = function () {
+        closeUploadModal.onclick = function() {
             uploadModal.style.display = 'none';
             uploadMessage.textContent = '';
         };
 
-        uploadConfigBtn.onclick = function () {
+        uploadConfigBtn.onclick = function() {
             const file = configUpload.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const uploadedConfig = JSON.parse(event.target.result);
-                    if(uploadedConfig.username) {
+                    if (uploadedConfig.username) {
                         localStorage.setItem('username', uploadedConfig.username);
                     }
 
@@ -733,11 +805,6 @@
                         fontSizeSelect.onchange(); // Apply font size
                     }
 
-                    if (uploadedConfig.transition) {
-                        transitionSelect.value = uploadedConfig.transition;
-                        transitionSelect.onchange(); // Apply transition
-                    }
-
                     if (uploadedConfig.chatMessageColors) {
                         chatBgColor.value = uploadedConfig.chatMessageColors.background;
                         chatBgColor.oninput(); // Apply chat background color
@@ -747,12 +814,23 @@
                     }
 
                     if (uploadedConfig.chatMessages && Array.isArray(uploadedConfig.chatMessages)) {
-                        const chatBox = document.getElementById('chat-box');
-                        chatBox.innerHTML = ''; // Clear existing messages
+                        const chatBoxElement = document.getElementById('chat-box');
+                        chatBoxElement.innerHTML = ''; // Clear existing messages
                         uploadedConfig.chatMessages.forEach(message => {
                             const newMessage = document.createElement('p');
                             newMessage.textContent = message;
-                            chatBox.appendChild(newMessage);
+                            chatBoxElement.appendChild(newMessage);
+                        });
+                    }
+
+                    if (uploadedConfig.reviews && Array.isArray(uploadedConfig.reviews)) {
+                        const reviewsList = document.getElementById('reviews-list');
+                        reviewsList.innerHTML = ''; // Clear existing reviews
+                        uploadedConfig.reviews.forEach(review => {
+                            const reviewDiv = document.createElement('div');
+                            reviewDiv.className = 'review';
+                            reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                            reviewsList.appendChild(reviewDiv);
                         });
                     }
 
@@ -764,13 +842,77 @@
             }
         };
 
+        // Question-Answer Dictionary
+        const qaDictionary = {
+            "cloud gaming": [
+                "Cloud gaming enables users to stream games directly from the internet without the need for powerful hardware.",
+                "In cloud gaming, the game runs on a server and is streamed to your device.",
+                "Essentially, it allows gamers to play high-quality games on low-end devices through streaming technology."
+            ],
+            "subscribe": [
+                "You can subscribe by visiting our subscription page and selecting your preferred plan.",
+                "To subscribe, head over to our subscription section and follow the prompts.",
+                "Just choose your desired plan from our website to get started."
+            ],
+            "games available": [
+                "Our library includes a variety of genres. You can check out the full list on our site.",
+                "We have a broad selection of games! Visit the games page to explore.",
+                "You can view the complete list of available games on our website."
+            ],
+            "requirements": [
+                "You'll need a stable internet connection and a compatible device for the best experience.",
+                "Check our requirements page for details on supported devices and internet speeds.",
+                "A good internet connection is essential for smooth gameplay, along with a compatible device."
+            ],
+            "controller": [
+                "You can use a variety of controllers with our service. They enhance your gaming experience!",
+                "Yes, controllers are supported across most games. Feel free to use your favorite one!",
+                "Indeed, using a controller is a great way to enjoy your games."
+            ]
+        };
+
+        function getRandomResponse(question) {
+            const lowerCaseQuestion = question.toLowerCase();
+            for (const [key, responses] of Object.entries(qaDictionary)) {
+                if (lowerCaseQuestion.includes(key)) {
+                    return responses[Math.floor(Math.random() * responses.length)];
+                }
+            }
+            return "I'm sorry, I don't have that information. Please ask something else!";
+        }
+
+        // Event listener for the send button
+        sendButton.onclick = function() {
+            const messageText = chatInput.value.trim();
+            if (messageText) {
+                const userMessage = document.createElement('p');
+                userMessage.textContent = `User: ${messageText}`;
+                chatBox.appendChild(userMessage);
+
+                // Get and display the bot response
+                const botResponse = getRandomResponse(messageText);
+                const responseMessage = document.createElement('p');
+                responseMessage.textContent = `Bot: ${botResponse}`;
+                chatBox.appendChild(responseMessage);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                // Clear input field
+                chatInput.value = '';
+            }
+        };
+
+        // Optionally, you can send a message when pressing Enter
+        chatInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendButton.click();
+            }
+        });
+
         // Apply saved preferences on load
-        window.onload = function () {
+        window.onload = function() {
             const savedTheme = localStorage.getItem('selectedTheme');
             const savedFont = localStorage.getItem('selectedFont');
             const savedFontSize = localStorage.getItem('fontSize');
-            const savedTransition = localStorage.getItem('selectedTransition');
-            const darkLight = localStorage.getItem('darkLight');
             const savedChatBgColor = localStorage.getItem('chatBgColor');
             const savedChatTextColor = localStorage.getItem('chatTextColor');
 
@@ -786,14 +928,6 @@
                 fontSizeSelect.value = savedFontSize;
                 fontSizeSelect.onchange(); // Trigger change to apply
             }
-            if (savedTransition) {
-                transitionSelect.value = savedTransition;
-                transitionSelect.onchange(); // Trigger change to apply
-            }
-            if (darkLight === 'dark') {
-                document.body.classList.add('light-theme');
-                darkLightToggle.textContent = '🌙';
-            }
             if (savedChatBgColor) {
                 chatBgColor.value = savedChatBgColor;
                 chatBgColor.oninput(); // Apply chat background
@@ -802,6 +936,16 @@
                 chatTextColor.value = savedChatTextColor;
                 chatTextColor.oninput(); // Apply chat text color
             }
+
+            // Load existing reviews
+            const existingReviews = getReviews();
+            const reviewsList = document.getElementById('reviews-list');
+            existingReviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'review';
+                reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                reviewsList.appendChild(reviewDiv);
+            });
         };
 
         // Click outside modal close functionality
