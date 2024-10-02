@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Gaming Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        body {
+            background-color: #101010;
+            color: #e3e3e3;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Themes */
+        .light-theme {
+            background-color: #ffffff;
+            color: #101010;
+        }
+
+        /* Header and Footer */
+        header {
+            background-color: #1c1c1c;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        footer {
+            background: #1c1c1c;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Navigation */
+        nav {
+            background: #212121;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+        }
+
+        /* Main Content */
+        #main-content {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 1.5em;
+        }
+
+        .loading-screen #progress {
+            width: 0;
+            height: 5px;
+            background: #00ff00;
+            transition: width 0.1s;
+        }
+
+        iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Chat Box */
+        .chat-box {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .chat-input {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            background: #222;
+            color: #fff;
+            border-radius: 5px;
+        }
+
+        .chat-input button {
+            padding: 10px;
+            background: #00ff00;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .chat-input button:hover {
+            background: #009900;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #292929;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-btn {
+            cursor: pointer;
+            color: #00ff00;
+            float: right;
+            font-size: 1.5em;
+        }
+
+        .close-btn:hover {
+            color: #009900;
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .review {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #00ff00;
+            border-radius: 5px;
+        }
+
+        /* Game Comparison Section */
+        .comparison-section {
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            background-color: rgba(34, 34, 34, 0.7);
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .comparison-table th {
+            background-color: rgba(0, 255, 0, 0.2);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            nav ul {
+                flex-direction: column;
+            }
+            nav ul li {
+                margin: 10px 0;
+            }
+            .chat-box {
+                height: 200px; /* Reduced height for small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="animated-text">Cloud Gaming Hub</h1>
+    </header>
+
+    <div class="loading-screen" id="loading-screen">
+        <div>Loading... <div id="progress"></div></div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#" id="nvidia-link">NVIDIA</a></li>
+            <li><a href="#" id="xbox-link">Xbox</a></li>
+            <li><a href="#" id="privacy-policy-link">Privacy Policy</a></li>
+            <li><a href="#" id="popular-games-link">Popular Games</a></li>
+            <li><a href="#" id="reviews-link">Reviews</a></li>
+            <li><a href="#" id="comparison-link">Game Comparison</a></li>
+            <li><a href="#" id="forum-link">Community Forum</a></li>
+            <li><a href="#" id="chat-link">Chat</a></li>
+            <li id="dark-light-toggle">🌙/🌞</li>
+            <li>
+                Theme: 
+                <select id="theme-select">
+                    <option value="default">Default</option>
+                    <option value="light">Light</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                </select>
+            </li>
+            <li>
+                Font: 
+                <select id="font-select">
+                    <option value="Roboto">Roboto</option>
+                    <option value="Open Sans">Open Sans</option>
+                    <option value="Montserrat">Montserrat</option>
+                </select>
+            </li>
+            <li>
+                Font Size: 
+                <select id="font-size-select">
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                    <option value="small">Small</option>
+                </select>
+            </li>
+            <li>
+                Transition: 
+                <select id="transition-select">
+                    <option value="none">None</option>
+                    <option value="fade">Fade</option>
+                    <option value="zoom">Zoom</option>
+                </select>
+            </li>
+            <li><a href="#" id="login-link">Login/Register</a></li>
+            <li><a href="#" id="save-config-link">Save Config</a></li>
+            <li><a href="#" id="upload-config-link">Upload Config</a></li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <div class="content" id="content">
+            <div class="game-filter">
+                <input type="text" id="game-search" placeholder="Search for games..." />
+            </div>
+            <div class="parallelogram">
+                <h2>Welcome to Cloud Gaming!</h2>
+                <p>Select a platform to start gaming.</p>
+            </div>
+            <div class="chat-customization">
+                <label for="chat-bg">Chat Background:</label>
+                <input type="color" id="chat-bg" value="#222222">
+                <label for="chat-text-color">Chat Text Color:</label>
+                <input type="color" id="chat-text-color" value="#ffffff">
+            </div>
+
+            <h1>Unblock and Display URL</h1>
+            <h2>NVIDIA Cloud Gaming</h2>
+            <label for="nvidia-url-input">Enter URL to Unblock:</label>
+            <input type="text" id="nvidia-url-input" value="http://play.geforcenow.com/" placeholder="https://example.com">
+            <button onclick="unblockAndDisplay('nvidia')">Unblock NVIDIA URL</button>
+            <h2>Unblocked Content</h2>
+            <iframe id="nvidia-iframe" class="hidden"></iframe>
+
+            <h2>Xbox Cloud Gaming</h2>
+            <label for="xbox-url-input">Enter URL to Unblock:</label>
+            <input type="text" id="xbox-url-input" value="http://www.xbox.com/en-US/play" placeholder="https://example.com">
+            <button onclick="unblockAndDisplay('xbox')">Unblock Xbox URL</button>
+            <h2>Unblocked Content</h2>
+            <iframe id="xbox-iframe" class="hidden"></iframe>
+        </div>
+
+        <div id="privacy-policy" class="hidden">
+            <div class="parallelogram">
+                <h2>Privacy Policy</h2>
+                <p>Your privacy is important to us. We collect information to provide better services to all our users.</p>
+                <p>For more details, please contact us.</p>
+            </div>
+        </div>
+
+        <div id="popular-games" class="hidden">
+            <div class="parallelogram">
+                <h2>Popular Games</h2>
+                <ul id="game-list">
+                    <li>The Witcher 3</li>
+                    <li>Halo Infinite</li>
+                    <li>Fortnite</li>
+                    <li>Call of Duty: Warzone</li>
+                    <li>Cyberpunk 2077</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="reviews" class="hidden reviews-section">
+            <h2>User Reviews</h2>
+            <div id="reviews-list"></div>
+            <input type="text" id="review-input" placeholder="Write a review..." />
+            <button id="submit-review">Submit Review</button>
+        </div>
+
+        <div id="comparison" class="hidden comparison-section">
+            <h2>Game Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>NVIDIA GeForce NOW</th>
+                        <th>Xbox Cloud Gaming</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Supported Devices</td>
+                        <td>PC, Mobile, Smart TVs</td>
+                        <td>PC, Mobile, Consoles</td>
+                    </tr>
+                    <tr>
+                        <td>Game Library</td>
+                        <td>220+ Games</td>
+                        <td>100+ Games</td>
+                    </tr>
+                    <tr>
+                        <td>Streaming Quality</td>
+                        <td>Up to 4K</td>
+                        <td>Up to 1080p</td>
+                    </tr>
+                    <tr>
+                        <td>Monthly Subscription</td>
+                        <td>$4.99</td>
+                        <td>$14.99</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="forum" class="hidden">
+            <h2>Community Forum</h2>
+            <h3>Discussion Topics</h3>
+            <div id="forum-topics">
+                <ul>
+                    <li><strong>Best Cloud Gaming Practices</strong></li>
+                    <li><strong>Hardware Recommendations</strong></li>
+                    <li><strong>Upcoming Game Releases</strong></li>
+                </ul>
+            </div>
+            <h3>Start a New Topic</h3>
+            <input type="text" id="forum-topic" placeholder="Enter topic title..." />
+            <button id="forum-submit">Post Topic</button>
+        </div>
+
+        <div id="chat" class="hidden">
+            <div class="parallelogram">
+                <h2>Chat Room</h2>
+                <div class="chat-box" id="chat-box"></div>
+                <div class="chat-input">
+                    <input type="text" id="chat-message" placeholder="Type your message..." />
+                    <button id="send-button">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 Cloud Gaming Hub. All rights reserved.
+    </footer>
+
+    <!-- User Login/Register Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal">×</span>
+            <h2 id="modal-title">Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Submit</button>
+                <p id="login-message" style="color: #00ff00;"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- File upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-upload-modal">×</span>
+            <h2>Upload Configuration File</h2>
+            <input type="file" id="config-upload" accept=".json">
+            <button id="upload-config-btn">Upload</button>
+            <p id="upload-message" style="color: #00ff00;"></p>
+        </div>
+    </div>
+
+    <script>
+        const loadingScreen = document.getElementById('loading-screen');
+        const progress = document.getElementById('progress');
+        const content = document.getElementById('content');
+        const reviewsList = document.getElementById('reviews-list');
+        
+        let loadProgress = 0;
+        const loadingInterval = setInterval(() => {
+            loadProgress += 10; // Increase progress
+            progress.style.width = `${loadProgress}%`;
+
+            if (loadProgress >= 100) {
+                clearInterval(loadingInterval);
+                loadingScreen.style.display = 'none'; // Hide loading screen
+                content.classList.remove('hidden'); // Show main content
+            }
+        }, 300);
+
+        function unblockAndDisplay(platform) {
+            let url;
+            if (platform === 'nvidia') {
+                url = document.getElementById("nvidia-url-input").value;
+            } else if (platform === 'xbox') {
+                url = document.getElementById("xbox-url-input").value;
+            }
+            
+            const corsProxy = "https://cors.ssp.42web.io/";
+            const unblockedUrl = corsProxy + url;
+
+            fetch(unblockedUrl)
+                .then(response => response.text())
+                .then(html => {
+                    const iframe = document.getElementById(platform === 'nvidia' ? "nvidia-iframe" : "xbox-iframe");
+                    iframe.srcdoc = html;
+                    iframe.classList.remove('hidden'); // Show the iframe
+                })
+                .catch(error => {
+                    console.error("Error unblocking the URL:", error);
+                });
+        }
+
+        // Navigation links functionality
+        document.getElementById('nvidia-link').onclick = function() {
+            unblockAndDisplay('nvidia');
+            hideOthers(['nvidia-iframe']);
+        };
+
+        document.getElementById('xbox-link').onclick = function() {
+            unblockAndDisplay('xbox');
+            hideOthers(['xbox-iframe']);
+        };
+
+        function hideOthers(exceptIds) {
+            const ids = ['nvidia-iframe', 'xbox-iframe', 'privacy-policy', 'popular-games', 'reviews', 'comparison', 'forum', 'chat'];
+            ids.forEach(id => {
+                if (!exceptIds.includes(id)) {
+                    document.getElementById(id).classList.add('hidden');
+                }
+            });
+        }
+
+        document.getElementById('privacy-policy-link').onclick = function() {
+            hideOthers(['privacy-policy']);
+            document.getElementById('privacy-policy').classList.remove('hidden');
+        };
+
+        document.getElementById('popular-games-link').onclick = function() {
+            hideOthers(['popular-games']);
+            document.getElementById('popular-games').classList.remove('hidden');
+        };
+
+        document.getElementById('reviews-link').onclick = function() {
+            hideOthers(['reviews']);
+            document.getElementById('reviews').classList.remove('hidden');
+        };
+
+        document.getElementById('comparison-link').onclick = function() {
+            hideOthers(['comparison']);
+            document.getElementById('comparison').classList.remove('hidden');
+        };
+
+        document.getElementById('forum-link').onclick = function() {
+            hideOthers(['forum']);
+            document.getElementById('forum').classList.remove('hidden');
+        };
+
+        document.getElementById('chat-link').onclick = function() {
+            hideOthers(['chat']);
+            document.getElementById('chat').classList.remove('hidden');
+        };
+
+        // Function to handle review submission
+        document.getElementById('submit-review').onclick = function() {
+            const reviewText = document.getElementById('review-input').value.trim();
+            if (reviewText) {
+                const newReview = document.createElement('div');
+                newReview.className = 'review';
+                newReview.innerHTML = `<strong>You:</strong> ${reviewText}`;
+                reviewsList.appendChild(newReview);
+                document.getElementById('review-input').value = ''; // Clear input
+                localStorage.setItem('reviews', JSON.stringify(getReviews()));
+            }
+        };
+
+        // Load existing reviews from local storage
+        function getReviews() {
+            const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+            return reviews;
+        }
+
+        // Load reviews on page load
+        window.onload = function() {
+            const existingReviews = getReviews();
+            existingReviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'review';
+                reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                reviewsList.appendChild(reviewDiv);
+            });
+        };
+
+        // Forum submission functionality
+        document.getElementById('forum-submit').onclick = function() {
+            const topicText = document.getElementById('forum-topic').value.trim();
+            if (topicText) {
+                const newTopic = document.createElement('li');
+                newTopic.textContent = topicText;
+                document.getElementById('forum-topics').appendChild(newTopic);
+                document.getElementById('forum-topic').value = ''; // Clear input
+                alert(`New topic posted: ${topicText}`);
+            } else {
+                alert('Please enter a topic title.');
+            }
+        };
+
+        // User Login/Register functionality
+        document.getElementById('login-link').onclick = function() {
+            document.getElementById('modal').style.display = 'flex';
+        };
+
+        document.getElementById('close-modal').onclick = function() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('login-message').textContent = '';
+        };
+
+        document.getElementById('login-form').onsubmit = function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (username && password) {
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
+                document.getElementById('login-message').textContent = `Welcome, ${username}`;
+                setTimeout(() => {
+                    document.getElementById('modal').style.display = 'none';
+                    document.getElementById('login-message').textContent = ''; // Clear login message
+                }, 2000);
+            }
+        };
+
+        // Toggle between dark and light theme
+        document.getElementById('dark-light-toggle').onclick = function() {
+            const currentTheme = document.body.classList.contains('light-theme');
+            document.body.classList.toggle('light-theme', !currentTheme);
+            this.textContent = currentTheme ? '🌞' : '🌙';
+            localStorage.setItem('darkLight', !currentTheme ? 'dark' : 'light');
+        };
+
+        // Theme customization
+        document.getElementById('theme-select').onchange = function() {
+            const selectedTheme = this.value;
+            document.body.classList.remove('light-theme', 'blue-theme', 'green-theme');
+            if (selectedTheme === 'light') {
+                document.body.classList.add('light-theme');
+            } else if (selectedTheme === 'blue') {
+                document.body.classList.add('blue-theme');
+            } else if (selectedTheme === 'green') {
+                document.body.classList.add('green-theme');
+            }
+            localStorage.setItem('selectedTheme', selectedTheme);
+        };
+
+        // Font customization
+        document.getElementById('font-select').onchange = function() {
+            const selectedFont = this.value;
+            document.body.style.fontFamily = selectedFont;
+            localStorage.setItem('selectedFont', selectedFont);
+        };
+
+        // Font size adjustment
+        document.getElementById('font-size-select').onchange = function() {
+            const size = this.value;
+            document.body.style.fontSize = size === 'small' ? '12px' : size === 'large' ? '18px' : '16px';
+            localStorage.setItem('fontSize', size);
+        };
+
+        // Chat Background and Text Color customization
+        document.getElementById('chat-bg').oninput = function() {
+            document.getElementById('chat-box').style.backgroundColor = this.value;
+            localStorage.setItem('chatBgColor', this.value);
+        };
+
+        document.getElementById('chat-text-color').oninput = function() {
+            document.getElementById('chat-box').style.color = this.value;
+            localStorage.setItem('chatTextColor', this.value);
+        };
+
+        // Save Configuration Feature
+        document.getElementById('save-config-link').onclick = function() {
+            const configData = {
+                username: localStorage.getItem('username'),
+                theme: document.getElementById('theme-select').value,
+                font: document.getElementById('font-select').value,
+                fontSize: document.getElementById('font-size-select').value,
+                chatMessageColors: {
+                    background: document.getElementById('chat-bg').value,
+                    text: document.getElementById('chat-text-color').value,
+                },
+                chatMessages: Array.from(document.getElementById('chat-box').children).map(p => p.textContent),
+                reviews: getReviews()
+            };
+            const configJSON = JSON.stringify(configData);
+            const blob = new Blob([configJSON], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'user-config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert('Configuration saved!');
+        };
+
+        // Upload Configuration File
+        document.getElementById('upload-config-link').onclick = function() {
+            document.getElementById('upload-modal').style.display = 'flex';
+        };
+
+        document.getElementById('close-upload-modal').onclick = function() {
+            document.getElementById('upload-modal').style.display = 'none';
+            document.getElementById('upload-message').textContent = '';
+        };
+
+        document.getElementById('upload-config-btn').onclick = function() {
+            const file = document.getElementById('config-upload').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const uploadedConfig = JSON.parse(event.target.result);
+                    if (uploadedConfig.username) {
+                        localStorage.setItem('username', uploadedConfig.username);
+                    }
+                    if (uploadedConfig.theme) {
+                        document.getElementById('theme-select').value = uploadedConfig.theme;
+                        document.getElementById('theme-select').onchange(); // Apply theme
+                    }
+                    if (uploadedConfig.font) {
+                        document.getElementById('font-select').value = uploadedConfig.font;
+                        document.getElementById('font-select').onchange(); // Apply font
+                    }
+                    if (uploadedConfig.fontSize) {
+                        document.getElementById('font-size-select').value = uploadedConfig.fontSize;
+                        document.getElementById('font-size-select').onchange(); // Apply font size
+                    }
+                    if (uploadedConfig.chatMessageColors) {
+                        document.getElementById('chat-bg').value = uploadedConfig.chatMessageColors.background;
+                        document.getElementById('chat-bg').oninput(); // Apply chat background color
+                        document.getElementById('chat-text-color').value = uploadedConfig.chatMessageColors.text;
+                        document.getElementById('chat-text-color').oninput(); // Apply chat text color
+                    }
+                    if (uploadedConfig.chatMessages && Array.isArray(uploadedConfig.chatMessages)) {
+                        const chatBoxElement = document.getElementById('chat-box');
+                        chatBoxElement.innerHTML = ''; // Clear existing messages
+                        uploadedConfig.chatMessages.forEach(message => {
+                            const newMessage = document.createElement('p');
+                            newMessage.textContent = message;
+                            chatBoxElement.appendChild(newMessage);
+                        });
+                    }
+                    if (uploadedConfig.reviews && Array.isArray(uploadedConfig.reviews)) {
+                        reviewsList.innerHTML = ''; // Clear existing reviews
+                        uploadedConfig.reviews.forEach(review => {
+                            const reviewDiv = document.createElement('div');
+                            reviewDiv.className = 'review';
+                            reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                            reviewsList.appendChild(reviewDiv);
+                        });
+                    }
+                    alert('Configuration uploaded successfully!');
+                };
+                reader.readAsText(file);
+            } else {
+                document.getElementById('upload-message').textContent = 'Please select a valid file.';
+            }
+        };
+
+        // Click outside modal close functionality
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('modal')) {
+                document.getElementById('modal').style.display = "none";
+                document.getElementById('login-message').textContent = ''; // Clear login message
+            } 
+            if (event.target === document.getElementById('upload-modal')) {
+                document.getElementById('upload-modal').style.display = "none";
+                document.getElementById('upload-message').textContent = ''; // Clear upload message
+            }
+        };
+
+        // Load saved preferences on page load
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('selectedTheme');
+            const savedFont = localStorage.getItem('selectedFont');
+            const savedFontSize = localStorage.getItem('fontSize');
+            const savedChatBgColor = localStorage.getItem('chatBgColor');
+            const savedChatTextColor = localStorage.getItem('chatTextColor');
+
+            if (savedTheme) {
+                document.getElementById('theme-select').value = savedTheme;
+                document.getElementById('theme-select').onchange(); // Trigger change to apply
+            }
+            if (savedFont) {
+                document.getElementById('font-select').value = savedFont;
+                document.getElementById('font-select').onchange(); // Trigger change to apply
+            }
+            if (savedFontSize) {
+                document.getElementById('font-size-select').value = savedFontSize;
+                document.getElementById('font-size-select').onchange(); // Trigger change to apply
+            }
+            if (savedChatBgColor) {
+                document.getElementById('chat-bg').value = savedChatBgColor;
+                document.getElementById('chat-bg').oninput(); // Apply chat background
+            }
+            if (savedChatTextColor) {
+                document.getElementById('chat-text-color').value = savedChatTextColor;
+                document.getElementById('chat-text-color').oninput(); // Apply chat text color
+            }
+
+            // Load existing reviews
+            const existingReviews = getReviews();
+            existingReviews.forEach(review => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'review';
+                reviewDiv.innerHTML = `<strong>${review.username}:</strong> ${review.text}`;
+                reviewsList.appendChild(reviewDiv);
+            });
+        };
+    </script>
+</body>
+</html>
