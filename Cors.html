@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Unblocker</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Unblock and Display URL</h1>
+    
+    <label for="urlInput">Enter URL to Unblock:</label>
+    <input type="text" id="urlInput" placeholder="https://example.com">
+    <button onclick="unblockAndDisplay()">Unblock URL</button>
+    
+    <h2>Unblocked Content</h2>
+    <iframe id="unblockedFrame"></iframe>
+
+    <script>
+        function unblockAndDisplay() {
+            const url = document.getElementById("urlInput").value;
+            const corsProxy = "https://cors.ssp.42web.io/";
+            const unblockedUrl = corsProxy + url;
+
+            fetch(unblockedUrl)
+                .then(response => response.text())
+                .then(html => {
+                    const iframe = document.getElementById("unblockedFrame");
+                    iframe.srcdoc = html;
+                })
+                .catch(error => {
+                    console.error("Error unblocking the URL:", error);
+                });
+        }
+    </script>
+</body>
+</html>
